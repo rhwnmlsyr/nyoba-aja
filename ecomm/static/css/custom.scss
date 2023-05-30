@@ -47,7 +47,7 @@ main{
 }
 
 hr{
-    margin: auto;
+    margin: 5rem auto;
     width: 15rem;
     height: 1px;
     color: #000;
@@ -91,6 +91,34 @@ hr{
     }
 }
 
+.home-body{
+    margin: 5rem 0;
+    display: grid; 
+    grid-template-columns: 1fr 1fr 1fr; 
+    // grid-template-rows: 1fr 1fr 1fr; 
+    gap: 5rem 0px; 
+    // border: 1px solid #000;
+}
+
+.collection-container{
+    position: relative;
+    width: 100%;
+    margin: 2.5rem 0;
+}
+
+.justify-end{
+    display: flex;
+    justify-content: flex-end;
+    // text-align: right;
+}
+
+.center{
+    display: flex;
+    flex-direction: column;
+    // align-items: center;
+    justify-content: center;
+}
+
 /* @colors */
 .bg{
     &-creme{
@@ -120,6 +148,11 @@ hr{
     font-weight: 300;
 }
 
+.home-subtitle{
+    color: #000;
+    margin: -5.5rem 0rem 0rem 0rem;
+}
+
 /* @buttons */
 .button{
     &-round{
@@ -130,32 +163,92 @@ hr{
         background-color: $brown;
         &:hover{
             background-color: $dark-brown;
+            transition: 0.5s;
         }
     }
 }
-
-/* @others */
-.hero{
-    margin: 5rem 0;
-    &-img{
+/* @images */
+.img{
+    &-hero{
         position: absolute;
         top: 5rem;
         right: 5rem;
         max-height: 20rem;
         z-index: -1;
     }
+    &-body{
+        &-1{
+            border-radius: 10rem 10rem 0 0;
+            max-height: 18rem;
+        }
+        &-2{
+            border-radius: 100%;
+            max-height: 15rem;
+            margin-top: 5rem;
+        }
+        &-3{
+            max-height: 18rem;
+            margin-top: 15rem;
+        }   
+    }
+    &-collection{
+        width: 35%;
+        max-width: 100%;
+        height: auto;
+        filter: brightness(25%);
+        &:hover{
+            cursor: pointer;
+            filter: brightness(100%);
+            transition: 0.5s;
+        }
+    }
+}
+/* @others */
+.hero{
+    margin: 5rem 0;
 }
 .square-creme{
-    position: absolute;
-    top: 0rem;
-    right: 0rem;
-    background-color: $creme;
-    height: 28rem;
-    width: 15rem;
-    z-index: -1;
+    &-1{
+        position: absolute;
+        top: 0rem;
+        right: 0rem;
+        background-color: $creme;
+        height: 28rem;
+        width: 15rem;
+        z-index: -1;
+    }
+    &-2{
+        position: absolute;
+        z-index: -1;
+        background-color: $creme;
+        margin-top: 5rem;
+        left: 0;
+        height: 30rem;
+        width: 10rem;
+    }
+    &-3{
+        position: absolute;
+        z-index: -1;
+        background-color: $creme;
+        margin-top: 28rem;
+        right: 0;
+        height: 10rem;
+        width: 10rem;
+    }
+    
 }
 
 .fa-basket-shopping:hover, .fa-right-to-bracket:hover, .fa-right-from-bracket:hover{
     color: white;
     transition: 0.5s;
+}
+
+.quote{
+    // position: absolute;
+    // left: 0;
+    margin: -1rem;
+    // padding: 0;
+    font-size: 5rem;
+    z-index: -1;
+    opacity: 0.5;
 }
