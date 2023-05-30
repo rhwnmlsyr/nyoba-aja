@@ -212,3 +212,8 @@ def paypal_return(request):
 def paypal_cancel(request):
     messages.error(request, 'Pembayaran dibatalkan')
     return redirect('toko:order-summary')
+
+class products(generic.ListView):
+    template_name = 'products.html'
+    queryset = ProdukItem.objects.all()
+    paginate_by = 4

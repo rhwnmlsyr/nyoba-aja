@@ -1,0 +1,154 @@
+@import url("https://fonts.googleapis.com/css2?family=Josefin+Sans:ital,wght@0,100;0,200;0,300;0,400;0,500;0,600;0,700;1,100;1,200;1,300;1,400;1,500;1,600;1,700&display=swap");
+/* line 1, static/css/custom.scss */
+.carousel-item {
+  height: 30vh; }
+
+/* line 4, static/css/custom.scss */
+.card {
+  box-shadow: rgba(0, 0, 0, 0.24) 0px 3px 8px; }
+
+/* line 7, static/css/custom.scss */
+.footer-cta {
+  box-shadow: rgba(0, 0, 0, 0.15) 0px 5px 15px; }
+
+/* line 10, static/css/custom.scss */
+.price {
+  color: #263238;
+  font-size: 24px; }
+
+/* line 15, static/css/custom.scss */
+.card-title {
+  color: #263238; }
+
+/* line 19, static/css/custom.scss */
+.sale {
+  color: #e53935; }
+
+/* line 23, static/css/custom.scss */
+.sale-badge {
+  background-color: #e53935; }
+
+/* ----------------------------------------------------- */
+/* line 28, static/css/custom.scss */
+:root {
+  --creme: #F7E7D8;
+  --brown: #9D6939; }
+
+/* line 34, static/css/custom.scss */
+* {
+  font-family: "Josefin Sans", sans-serif; }
+
+/* line 38, static/css/custom.scss */
+button {
+  border: none; }
+
+/* line 42, static/css/custom.scss */
+.nav-link {
+  font-family: 'Lato', sans-serif; }
+
+/* line 46, static/css/custom.scss */
+main {
+  min-height: 100vh; }
+
+/* @containers */
+/* line 51, static/css/custom.scss */
+.input-small-container {
+  width: 10rem;
+  background-color: white;
+  border-radius: 1rem;
+  display: flex;
+  flex-direction: row;
+  padding: 0.15rem; }
+
+/* line 60, static/css/custom.scss */
+.input-small:hover {
+  cursor: pointer; }
+
+/* line 64, static/css/custom.scss */
+.input-small {
+  background-color: transparent;
+  border: none; }
+
+/* line 69, static/css/custom.scss */
+.product-container {
+  text-align: left;
+  padding: 1rem; }
+
+/* line 74, static/css/custom.scss */
+.product-container:hover {
+  cursor: pointer;
+  /* background-color: #F7E7D8; */
+  border-radius: 0.5rem; }
+
+/* line 80, static/css/custom.scss */
+.product-picture {
+  height: 20rem;
+  width: auto;
+  aspect-ratio: 3/4;
+  border-radius: 1rem;
+  margin-bottom: 1rem; }
+
+/* line 88, static/css/custom.scss */
+.hero {
+  margin: 2rem 0; }
+
+/* @colors */
+/* line 93, static/css/custom.scss */
+.bg-creme {
+  background-color: var(--creme); }
+
+/* line 96, static/css/custom.scss */
+.bg-brown {
+  background-color: var(--brown); }
+
+/* line 99, static/css/custom.scss */
+.color-black {
+  color: #000; }
+
+/* line 102, static/css/custom.scss */
+.color-white {
+  color: #fff; }
+
+/* @fonts */
+/* line 108, static/css/custom.scss */
+.price {
+  font-family: 'Lato';
+  font-weight: lighter; }
+
+/* line 113, static/css/custom.scss */
+.subtitle {
+  font-size: 1.5rem;
+  font-weight: 300; }
+
+/* @buttons */
+/* line 119, static/css/custom.scss */
+.button-round {
+  border-radius: 1rem;
+  padding: 0.25rem 0.75rem; }
+
+/* line 123, static/css/custom.scss */
+.button-brown {
+  background-color: var(--brown); }
+
+/* line 126, static/css/custom.scss */
+.button-brown:hover {
+  background-color: var(--creme); }
+
+/* @others */
+/* line 131, static/css/custom.scss */
+.hero-img {
+  position: absolute;
+  top: 5rem;
+  right: 5rem;
+  max-height: 20rem;
+  z-index: -1; }
+
+/* line 138, static/css/custom.scss */
+.square-creme {
+  position: absolute;
+  top: 0rem;
+  right: 0rem;
+  background-color: var(--creme);
+  height: 28rem;
+  width: 15rem;
+  z-index: -1; }

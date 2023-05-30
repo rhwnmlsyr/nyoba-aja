@@ -1,7 +1,7 @@
 {% load cart_template_tags %}
 
 <!-- Navbar -->
-<nav class="navbar fixed-top navbar-expand-lg navbar-light bg-white">
+<nav class="navbar fixed-top navbar-expand-lg navbar-dark bg-black">
     <!-- Container wrapper -->
     <div class="container">    
         <!-- Toggle button -->
@@ -20,36 +20,35 @@
         <!-- Collapsible wrapper -->
         <div class="collapse navbar-collapse" id="navbarSupportedContent1">      
         <!-- Navbar brand -->
-        <a class="navbar-brand mt-2 mt-sm-0" href="#">
+        <!-- <a class="navbar-brand mt-2 mt-sm-0" href="#">
             <img
             src="https://mdbcdn.b-cdn.net/img/logo/mdb-transaprent-noshadows.webp"
             height="20"
             alt="MDB Logo"
             loading="lazy"
             />
-        </a>
+        </a> -->
         <!-- Left links -->
         <ul class="navbar-nav me-auto mb-2 mb-lg-0">
-            <li class="nav-item active">
-            <a class="nav-link " href="/">Home</a>
+            <li class="nav-item">
+                <a class="nav-link {% if request.path == '/' %}active{% endif %}" href="/">Home</a>
             </li>
             <li class="nav-item">
-            <a class="nav-link" href="{% url 'toko:checkout' %}">Checkout</a>
+                <a class="nav-link {% if request.path == '/products/' %}active{% endif %}" href="/products/">Products</a>
             </li>
             <li class="nav-item">
-                <a class="nav-link" href="/">Kontak</a>
+                <a class="nav-link {% if request.path == '/contact' %}active{% endif %}" href="/">Contact</a>
                 </li>
         </ul>
         <!-- Left links -->      
         </div>
-        <!-- Collapsible wrapper -->
         
         <!-- Right elements -->
         <div class="d-flex align-items-center">
             {% if request.user.is_authenticated %}
                 <!-- Icon -->
                 <a class="nav-link me-3" href="{% url 'toko:order-summary' %}">
-                    <i class="fas fa-shopping-cart"></i>
+                    <i class="fa-solid fa-basket-shopping"></i>
                     <span class="badge rounded-pill badge-notification bg-danger">{{ request.user|total_produk_dikeranjang }}</span>
                 </a>
                 <a class="nav-link me-3" href="{% url 'account_logout' %}">

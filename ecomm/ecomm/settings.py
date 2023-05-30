@@ -55,6 +55,7 @@ INSTALLED_APPS = [
     'crispy_bootstrap5',
 
     'paypal.standard.ipn',
+    'compressor'
 ]
 
 AUTHENTICATION_BACKENDS = [
@@ -171,6 +172,14 @@ LOGIN_REDIRECT_URL = '/'
 STATIC_URL = '/static/'
 STATICFILES_DIRS = [os.path.join(BASE_DIR, 'static')]
 STATIC_ROOT = os.path.join(BASE_DIR, 'static_root')
+STATICFILES_FINDERS =( 
+    'django.contrib.staticfiles.finders.FileSystemFinder',  
+    'django.contrib.staticfiles.finders.AppDirectoriesFinder',    
+    'compressor.finders.CompressorFinder',
+) 
+COMPRESS_PRECOMPILERS = (    
+    ('text/x-scss', 'django_libsass.SassCompiler'),
+)
 MEDIA_URL = '/media/'
 MEDIA_ROOT = os.path.join(BASE_DIR, 'media')
 
