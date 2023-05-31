@@ -10,6 +10,50 @@ from paypal.standard.forms import PayPalPaymentsForm
 from .forms import CheckoutForm
 from .models import ProdukItem, OrderProdukItem, Order, AlamatPengiriman, Payment
 
+from django.db.models import Q
+
+import logging
+
+def filter_view(request):
+    logger = logging.getLogger(__name__)
+
+    sort_option = request.GET.get('category')
+    
+    logger.warning(sort_option)
+    # Apply sort filter
+    if sort_option == 'A':
+        object_list = ProdukItem.objects.order_by('harga')
+    elif sort_option == 'B':
+        object_list = ProdukItem.objects.order_by('-harga')
+    else:
+        object_list = ProdukItem.objects.all()
+
+    context = {
+        'object_list': object_list,
+        'sort_option': sort_option,
+    }
+    return render(request, 'products.html', context)
+
+
+def search_and_filter_view(request):
+    query = request.GET.get('query')
+    category = request.GET.get('category')
+
+    object_list = ProdukItem.objects.all()
+
+    if query:
+        object_list = object_list.filter(Q(nama_produk__icontains=query))
+    if category:
+        object_list = object_list.filter(Q(kategori__iexact=category.upper()))
+
+    context = {
+        'object_list': object_list,
+        'query': query,
+        'category': category
+    }
+
+    return render(request, 'products.html', context)
+
 class HomeListView(generic.ListView):
     template_name = 'home.html'
     queryset = ProdukItem.objects.all()

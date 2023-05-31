@@ -7,43 +7,24 @@
             class="navbar navbar-expand-lg navbar-dark mt-3 mb-5 p-2 bg-creme"
         >
             <!-- Container wrapper -->
-            <!-- <form id="filter-form" class="container-fluid">
-                <input style="max-width: 12rem" id="search-input" type="search" class="form-control rounded-0" placeholder="Search Product" aria-label="Search">
-                <select style="max-width: 12rem" id="filter-select" class="form-control rounded-0">
-                    <option value="">All Categories</option>
-                    <option value="option1">Rings</option>
-                    <option value="option2">Necklaces</option>
-                    <option value="option3">Tiara</option>
-                    <option value="option4">Bracelets</option>
-                    <option value="option5">Ankle Bracelets</option>
-                </select>
-            </form> -->
-            <form id="filter-form" class="container column" action="{% url 'search_and_filter' %}" method="GET">
-                <div class="filter-container">
-                    <!-- Search form input field -->
-                    <input style="max-width: 12rem"  type="search" name="query" class="form-control rounded-0" placeholder="Search Product" aria-label="Search">
-                    <!-- Category filter select field -->
-                    <select style="max-width: 12rem"  id="category-select" name="category" class="form-control rounded-0">
+            <div class="container-fluid">
+                <form class="w-auto py-1" style="max-width: 12rem" action="{% url 'search' %}" method="GET">
+                    <input type="search" name="query" class="form-control rounded-0" placeholder="Search Product" aria-label="Search">
+                </form>
+                <form class="w-auto py-1" style="max-width: 12rem">
+                    <select class="form-control rounded-0">
                         <option value="">All Categories</option>
-                        <option value="S">Shirt</option>
-                        <option value="SW">Sport wear</option>
-                        <option value="OW">Outwear</option>
+                        <option value="option1">Rings</option>
+                        <option value="option2">Necklaces</option>
+                        <option value="option3">Tiara</option>
+                        <option value="option3">Bracelets</option>
+                        <option value="option3">Ankle Bracelets</option>
                     </select>
-                </div>
-                <!-- Submit button -->
-                <button type="submit" class="button-search"><i class="fa-solid fa-magnifying-glass"></i> Search & Filter</button>
-            </form>
+                </form>
+            </div>
+                  
         </nav>
         <!-- Navbar -->
-
-        <form id="sort-form" action="{% url 'filter' %}">
-            <select style="max-width: 12rem"  id="sort-select" name="category" class="form-control rounded-0">
-                <option selected>Sort By</option>
-                <option value="A">Price (Low to High)</option>
-                <option value="B">Price (High to Low)</option>
-            </select>
-        </form>
-        
 
         <!-- Products -->
         <section>
@@ -86,8 +67,6 @@
                                         <span class="visually-hidden">Next</span>
                                     </button>
                                 </div>
-                                <p>{{ pItem.get_kategori_display }}</p>
-
                                 <h3>{{ pItem.nama_produk }}</h3>
                                 <h5 class="price">${% if pItem.harga_diskon %}
                                     {{ pItem.harga_diskon }}
@@ -98,7 +77,7 @@
                         </a>
                     </div>
                     {% empty %}
-                    <p>No products avaiable</p>
+                    <p>No items with that name</p>
                     {% endfor %}
                 </div>
             </div>
@@ -145,14 +124,4 @@
     </div>
 </main>
 <!--Main layout-->
-
-
-<script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
-<script>
-  $(document).ready(function() {
-    $('#sort-select').on('change', function() {
-      $('#sort-form').submit();
-    });
-  });
-</script>
 {% endblock content %}

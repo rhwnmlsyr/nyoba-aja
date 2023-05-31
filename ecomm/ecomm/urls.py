@@ -18,7 +18,7 @@ from django.conf import settings
 from django.conf.urls.static import static
 from django.contrib import admin
 from django.urls import path, include
-
+from toko import views
 # from toko.views import CustomLoginView, CustomLogoutView
 
 urlpatterns = [
@@ -26,6 +26,10 @@ urlpatterns = [
     path('accounts/', include('allauth.urls')),
     path('paypal/', include('paypal.standard.ipn.urls')),
     path('', include('toko.urls', namespace='toko')),
+    path('search-and-filter/', views.search_and_filter_view, name='search_and_filter'),
+    path('filter/', views.filter_view, name='filter'),
+    # path('search/', views.search_view, name='search'),
+    # path('filter/', views.filter_view, name='filter'),
     # path('accounts/login/', CustomLoginView.as_view(), name='account_login'),
     # path('accounts/logout/', CustomLogoutView.as_view(), name='account_logout'),
 ]
