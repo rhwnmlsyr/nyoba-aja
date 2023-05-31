@@ -27,7 +27,7 @@
                     <a href="{% url 'toko:produk-detail' pItem.produk_item.slug %}">
                         <div class="d-flex align-items-center">
                             <img
-                                src="{{ pItem.produk_item.gambar.url }}"
+                                src="{{ pItem.produk_item.images.first.gambar.url }}"
                                 alt=""
                                 style="width: 45px; height: 45px"
                                 class="rounded-circle"

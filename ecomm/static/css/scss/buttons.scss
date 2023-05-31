@@ -1,0 +1,22 @@
+@import './variables.scss';
+
+/* @buttons */
+.button{
+    &-round{
+        border-radius: 1rem;
+        padding: 0.25rem 0.75rem;
+    }
+    &-brown{
+        background-color: $brown;
+        &:hover{
+            background-color: $dark-brown;
+            transition: 0.5s;
+        }
+    }
+    &-bw{
+        background-color: white;
+        border: 2px solid #000;
+        border-radius: 5rem;
+        padding: 0 0.75rem;
+    }
+}

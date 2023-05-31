@@ -24,14 +24,21 @@
     background-color: #e53935;
 }
 /* ----------------------------------------------------- */
-$creme: #F7E7D8;
-$brown: #9D6939;
-$dark-brown: #673E17;
 
+@import './scss/variables.scss', './scss/images.scss', './scss/fonts.scss', './scss/containers.scss', './scss/colors.scss', './scss/buttons.scss';
 
 @import url("https://fonts.googleapis.com/css2?family=Josefin+Sans:ital,wght@0,100;0,200;0,300;0,400;0,500;0,600;0,700;1,100;1,200;1,300;1,400;1,500;1,600;1,700&display=swap");
+
 * {
     font-family: "Josefin Sans", sans-serif;
+}
+
+a{
+    color: black;
+    &:hover{
+        color: $gold;
+        transform: 0.5s;
+    }
 }
 
 button{
@@ -54,159 +61,11 @@ hr{
     background-color: #000;
 }
 
-/* @containers */
-.input{
-    &-small{
-        background-color: transparent;
-        border: none;
-        &:hover{
-            cursor: pointer;
-        }
-        &-container{
-            width: 10rem;
-            background-color: white;
-            border-radius: 1rem;
-            display: flex;
-            flex-direction: row;
-            padding: 0.15rem;
-        }
-    }
-}
-.product{
-    &-container{
-        text-align: left;
-        padding: 1rem;
-        &:hover{
-            cursor: pointer;
-            /* background-color: #F7E7D8; */
-            border-radius: 0.5rem;
-        }
-    }
-    &-picture{
-        height: 20rem;
-        width: auto;
-        aspect-ratio: 3/4;
-        border-radius: 1rem;
-        margin-bottom: 1rem;
-    }
-}
-
-.home-body{
-    margin: 5rem 0;
-    display: grid; 
-    grid-template-columns: 1fr 1fr 1fr; 
-    // grid-template-rows: 1fr 1fr 1fr; 
-    gap: 5rem 0px; 
-    // border: 1px solid #000;
-}
-
-.collection-container{
-    position: relative;
-    width: 100%;
-    margin: 2.5rem 0;
-}
-
-.justify-end{
-    display: flex;
-    justify-content: flex-end;
-    // text-align: right;
-}
-
-.center{
-    display: flex;
-    flex-direction: column;
-    // align-items: center;
-    justify-content: center;
-}
-
-/* @colors */
-.bg{
-    &-creme{
-        background-color: $creme;
-    }
-    &-brown{
-        background-color: $brown;
-    }
-}
-.color{
-    &-black{
-        color: #000;        
-    }
-    &-white{
-        color: #fff;
-    }
-}
-
-/* @fonts */
-.price{
-    font-family: 'Lato';
-    font-weight: lighter;
-}
-
-.subtitle {
-    font-size: 1.5rem;
-    font-weight: 300;
-}
-
-.home-subtitle{
-    color: #000;
-    margin: -5.5rem 0rem 0rem 0rem;
-}
-
-/* @buttons */
-.button{
-    &-round{
-        border-radius: 1rem;
-        padding: 0.25rem 0.75rem;
-    }
-    &-brown{
-        background-color: $brown;
-        &:hover{
-            background-color: $dark-brown;
-            transition: 0.5s;
-        }
-    }
-}
-/* @images */
-.img{
-    &-hero{
-        position: absolute;
-        top: 5rem;
-        right: 5rem;
-        max-height: 20rem;
-        z-index: -1;
-    }
-    &-body{
-        &-1{
-            border-radius: 10rem 10rem 0 0;
-            max-height: 18rem;
-        }
-        &-2{
-            border-radius: 100%;
-            max-height: 15rem;
-            margin-top: 5rem;
-        }
-        &-3{
-            max-height: 18rem;
-            margin-top: 15rem;
-        }   
-    }
-    &-collection{
-        width: 35%;
-        max-width: 100%;
-        height: auto;
-        filter: brightness(25%);
-        &:hover{
-            cursor: pointer;
-            filter: brightness(100%);
-            transition: 0.5s;
-        }
-    }
-}
 /* @others */
 .hero{
     margin: 5rem 0;
 }
+
 .square-creme{
     &-1{
         position: absolute;

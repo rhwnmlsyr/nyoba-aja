@@ -1,0 +1,19 @@
+@import './variables.scss';
+
+/* @colors */
+.bg{
+    &-creme{
+        background-color: $creme;
+    }
+    &-brown{
+        background-color: $brown;
+    }
+}
+.color{
+    &-black{
+        color: #000;        
+    }
+    &-white{
+        color: #fff;
+    }
+}

@@ -8,9 +8,40 @@
         <!--Grid row-->
         <div class="row">
             <!--Grid column-->
+            <strong><p style="font-size: 20px;">{{ object.nama_produk }}</p></strong>
             <div class="col-md-6 mb-4">
-                <img src="{{ object.gambar.url }}" class="img-fluid" alt="" />
+
+                <div id="carouselExampleIndicators" class="carousel slide" data-mdb-ride="carousel">
+                    <div class="carousel-indicators">
+                        {% for image in object.images.all %}
+                        <button
+                            type="button"
+                            data-mdb-target="#carouselExampleIndicators"
+                            data-mdb-slide-to="{{ forloop.counter0 }}"
+                            class="{% if forloop.first %}active{% endif %}"
+                            aria-current="true"
+                            aria-label="Slide {{ forloop.counter }}"
+                        ></button>
+                        {% endfor %}
+                    </div>
+                    <div class="carousel-inner">
+                        {% for image in object.images.all %}
+                        <div class="carousel-item {% if forloop.first %}active{% endif %}">
+                            <img src="{{ image.gambar.url }}" class="d-block w-100" alt="Wild Landscape"/>
+                        </div>
+                        {% endfor %}
+                    </div>
+                    <button class="carousel-control-prev" type="button" data-mdb-target="#carouselExampleIndicators" data-mdb-slide="prev">
+                        <i class="fa-solid fa-chevron-left"></i>
+                        <span class="visually-hidden">Previous</span>
+                    </button>
+                    <button class="carousel-control-next" type="button" data-mdb-target="#carouselExampleIndicators" data-mdb-slide="next">
+                        <i class="fa-solid fa-chevron-right"></i>
+                        <span class="visually-hidden">Next</span>
+                    </button>
+                </div>
             </div>
+            
             <!--Grid column-->
 
             <!--Grid column-->
@@ -47,8 +78,6 @@
                         {% endif %}
                     </p>
 
-                    <strong><p style="font-size: 20px;">Deskripsi</p></strong>
-
                     <p>{{ object.deskripsi }}</p>
                     <a href="{{ object.get_add_to_cart_url }}" class="btn btn-primary ms-1">
                         Tambah ke keranjang
@@ -66,40 +95,6 @@
         <!--Grid row-->
 
         <hr />
-
-        <!--Grid row-->
-        <div class="row d-flex justify-content-center">
-            <!--Grid column-->
-            <div class="col-md-6 text-center">
-                <h4 class="my-4 h4">Additional information</h4>
-
-                <p>Lorem ipsum dolor sit amet consectetur adipisicing elit. Natus suscipit modi sapiente illo soluta odit voluptates, quibusdam officia. Neque quibusdam quas a quis porro? Molestias illo neque eum in laborum.</p>
-            </div>
-            <!--Grid column-->
-        </div>
-        <!--Grid row-->
-
-        <!--Grid row-->
-        <div class="row">
-            <!--Grid column-->
-            <div class="col-lg-4 col-md-12 mb-4">
-                <img src="https://mdbootstrap.com/img/Photos/Horizontal/E-commerce/Products/11.jpg" class="img-fluid" alt="" />
-            </div>
-            <!--Grid column-->
-
-            <!--Grid column-->
-            <div class="col-lg-4 col-md-6 mb-4">
-                <img src="https://mdbootstrap.com/img/Photos/Horizontal/E-commerce/Products/12.jpg" class="img-fluid" alt="" />
-            </div>
-            <!--Grid column-->
-
-            <!--Grid column-->
-            <div class="col-lg-4 col-md-6 mb-4">
-                <img src="https://mdbootstrap.com/img/Photos/Horizontal/E-commerce/Products/13.jpg" class="img-fluid" alt="" />
-            </div>
-            <!--Grid column-->
-        </div>
-        <!--Grid row-->
     </div>
 </main>
 <!--Main layout-->

@@ -1,0 +1,38 @@
+@import './variables.scss';
+
+/* @images */
+.img{
+    &-hero{
+        position: absolute;
+        top: 5rem;
+        right: 5rem;
+        max-height: 20rem;
+        z-index: -1;
+    }
+    &-body{
+        &-1{
+            border-radius: 10rem 10rem 0 0;
+            max-height: 18rem;
+        }
+        &-2{
+            border-radius: 100%;
+            max-height: 15rem;
+            margin-top: 5rem;
+        }
+        &-3{
+            max-height: 18rem;
+            margin-top: 15rem;
+        }   
+    }
+    &-collection{
+        width: 35%;
+        max-width: 100%;
+        height: auto;
+        filter: brightness(25%);
+        &:hover{
+            cursor: pointer;
+            filter: brightness(100%);
+            transition: 0.5s;
+        }
+    }
+}

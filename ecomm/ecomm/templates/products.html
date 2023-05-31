@@ -1,5 +1,4 @@
-{% extends 'base.html' %} {% block content %} {% include 'carousel.html' %}
-
+{% extends 'base.html' %} {% block content %} 
 <!--Main layout-->
 <main>
     <div class="container">
@@ -35,77 +34,51 @@
         <section>
             <div class="text-center">
                 <div class="row">
-                    
+
                     {% for pItem in object_list %}
                     <div class="col-lg-3 col-md-6 mb-4">
-                        <div class="product-container">
-                            <img src="{{ pItem.gambar.url }}" class="product-picture">
-                            </img>
-                            <h3>{{ pItem.nama_produk }}</h3>
-                            <h5 class="price">${% if pItem.harga_diskon %}
-                                {{ pItem.harga_diskon }}
-                            {% else %}
-                                {{ pItem.harga }}
-                            {% endif %}</h5>
-                        </div>
-                        <!-- <div class="card">
-                            <div
-                                class="bg-image hover-zoom ripple ripple-surface ripple-surface-light"
-                                data-mdb-ripple-color="light"
-                            >
-                                <img
-                                    src="{{ pItem.gambar.url }}"
-                                    class="w-100"
-                                />
-                                <a href="{{ pItem.get_absolute_url }}">
-                                    <div class="mask">
-                                        <div
-                                            class="d-flex justify-content-start align-items-end h-100"
-                                        >
-                                            <h5>
-                                                <span
-                                                    class="badge bg-{{ pItem.get_label_display }} ms-2"
-                                                    >{{ pItem.label }}</span
-                                                >
-                                            </h5>
+                        <a href="{{ pItem.get_absolute_url }}">
+                            <div class="product-container">
+                                <div id="carouselExampleCaptions-{{ forloop.counter }}" class="carousel slide carousel-fade" data-mdb-ride="carousel">
+                                    <div class="carousel-indicators">
+                                        {% for image in pItem.images.all %}
+                                        <button
+                                                type="button"
+                                                data-mdb-target="#carouselExampleCaptions-{{ forloop.counter }}"
+                                                data-mdb-slide-to="{{ forloop.counter0 }}"
+                                                aria-label="Slide {{ forloop.counter }}"
+                                                class="{% if forloop.first %}active{% endif %}"
+                                                aria-current="true"
+                                        ></button>
+                                        {% endfor %}
+
+                                    </div>
+                                    <div class="carousel-inner product-picture">
+                                        {% for image in pItem.images.all %}
+                                        <div class="carousel-item {% if forloop.first %}active{% endif %}">
+                                            <img src="{{ image.gambar.url }}" class="product-picture" alt="Wild Landscape"/>
+                                            <div class="mask"></div>
                                         </div>
+                                        {% endfor %}
                                     </div>
-                                    <div class="hover-overlay">
-                                        <div
-                                            class="mask"
-                                            style="
-                                                background-color: rgba(
-                                                    251,
-                                                    251,
-                                                    251,
-                                                    0.15
-                                                );
-                                            "
-                                        ></div>
-                                    </div>
-                                </a>
+
+                                    <button class="carousel-control-prev" type="button" data-mdb-target="#carouselExampleCaptions-{{ forloop.counter }}" data-mdb-slide="prev">
+                                        <i class="fa-solid fa-chevron-left"></i>
+                                        <span class="visually-hidden">Previous</span>
+                                    </button>
+                                    <button class="carousel-control-next" type="button" data-mdb-target="#carouselExampleCaptions-{{ forloop.counter }}" data-mdb-slide="next">
+                                        <i class="fa-solid fa-chevron-right"></i>
+                                        <span class="visually-hidden">Next</span>
+                                    </button>
+                                </div>
+                                <h3>{{ pItem.nama_produk }}</h3>
+                                <h5 class="price">${% if pItem.harga_diskon %}
+                                    {{ pItem.harga_diskon }}
+                                {% else %}
+                                    {{ pItem.harga }}
+                                {% endif %}</h5>
                             </div>
-                            <div class="card-body">
-                                <a
-                                    href="{{ pItem.get_absolute_url }}"
-                                    class="text-reset"
-                                >
-                                    <h5 class="card-title mb-2">
-                                        {{ pItem.nama_produk }}
-                                    </h5>
-                                </a>
-                                <a href="" class="text-reset">
-                                    <p>{{ pItem.get_kategori_display }}</p>
-                                </a>
-                                <h6 class="mb-3 price">
-                                  ${% if pItem.harga_diskon %}
-                                      {{ pItem.harga_diskon }}
-                                  {% else %}
-                                      {{ pItem.harga }}
-                                  {% endif %}
-                              </h6>                              
-                            </div>
-                        </div> -->
+                        </a>
                     </div>
                     {% empty %}
                     <p>Data Produk belum tersedia</p>
