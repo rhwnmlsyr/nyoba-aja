@@ -156,7 +156,7 @@ def add_to_cart(request, slug):
             messages.info(request, f'{order_produk_item.produk_item.nama_produk} has been added to your cart')
             return redirect('toko:produk-detail', slug = slug)
     else:
-        return redirect('/accounts/login')
+        return redirect(f'/accounts/login?next={request.path}')
 
 def remove_from_cart(request, slug):
     if request.user.is_authenticated:
@@ -194,7 +194,7 @@ def remove_from_cart(request, slug):
             messages.info(request, f'No active orders of {order_produk_item.produk_item.nama_produk}')
             return redirect('toko:produk-detail',slug = slug)
     else:
-        return redirect('/accounts/login')
+        return redirect(f'/accounts/login?next={request.path}')
 
 # @csrf_exempt
 def paypal_return(request):
@@ -223,7 +223,7 @@ def paypal_return(request):
             messages.error(request, 'Please check your orders again')
             return redirect('toko:order-summary')
     else:
-        return redirect('/accounts/login')
+        return redirect(f'/accounts/login?next={request.path}')
 
 # @csrf_exempt
 def paypal_cancel(request):
