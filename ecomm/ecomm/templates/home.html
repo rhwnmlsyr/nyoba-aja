@@ -6,7 +6,7 @@
         <section class="hero">
             <h1 class="color-black">Enhance Your Beauty,<br/>Adorn Your Style.</h1>
             <p class="subtitle">Discover beauty's finest treasures, unveil your radiance.</p>
-            <button class="button-brown button-round color-white">See More <i class="fa-solid fa-arrow-right"></i></button>
+            <a class="button-brown button-round color-white p-2" href="./products">See More <i class="fa-solid fa-arrow-right"></i></a>
             <div class="square-creme-1"></div>
 
             <img class="img-hero" src="{% static 'img/image 17.png' %}" />
@@ -14,7 +14,7 @@
 
         <hr/>
 
-        <section class="home-body">
+        <section class="home-body m-lg-5">
             <div>
                 <div class="square-creme-2"></div>
                 <img class="img-body-1" src="{% static 'img/image 16.png' %}" />
@@ -41,12 +41,18 @@
         <section>
             <div class="d-flex justify-content-between">
                 <h3 style="color: #000; font-weight:800">Browse Our Collection</h3>
-                <button class="button-bw">View All <i class="fa-solid fa-arrow-right"></i></button>
+                <a href="./products" class="button-bw button">View All&ensp; <i class="fa-solid fa-arrow-right"></i></a>
             </div>
             <div class="d-flex align-items-start collection-container">
-                <img class="img-collection" src="{% static 'img/image 2.png' %}" />
-                <img class="img-collection" src="{% static 'img/image 2.png' %}" />
-                <img class="img-collection" src="{% static 'img/image 2.png' %}" />
+                {% for pItem in object_list %}
+                    {% if forloop.counter <= 3 %}
+                    <a href="{{ pItem.get_absolute_url }}">
+                        {% for image in pItem.images.all|slice:":1" %}
+                        <img class="img-collection" src="{{ image.gambar.url }}" />
+                        {% endfor %}
+                    </a>
+                    {% endif %}
+                {% endfor %}
             </div>
             
         </section>

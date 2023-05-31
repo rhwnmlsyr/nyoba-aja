@@ -19,11 +19,15 @@ from django.conf.urls.static import static
 from django.contrib import admin
 from django.urls import path, include
 
+# from toko.views import CustomLoginView, CustomLogoutView
+
 urlpatterns = [
     path('admin/', admin.site.urls),
     path('accounts/', include('allauth.urls')),
     path('paypal/', include('paypal.standard.ipn.urls')),
     path('', include('toko.urls', namespace='toko')),
+    # path('accounts/login/', CustomLoginView.as_view(), name='account_login'),
+    # path('accounts/logout/', CustomLogoutView.as_view(), name='account_logout'),
 ]
 
 if settings.DEBUG:

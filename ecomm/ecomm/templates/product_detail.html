@@ -1,7 +1,6 @@
 {% extends 'base.html' %}
 
 {% block content%}
-
 <!--Main layout-->
 <main class="mt-5 pt-4">
     <div class="container mt-5">
@@ -10,7 +9,6 @@
             <!--Grid column-->
             <strong><p style="font-size: 20px;">{{ object.nama_produk }}</p></strong>
             <div class="col-md-6 mb-4">
-
                 <div id="carouselExampleIndicators" class="carousel slide" data-mdb-ride="carousel">
                     <div class="carousel-indicators">
                         {% for image in object.images.all %}
@@ -24,10 +22,10 @@
                         ></button>
                         {% endfor %}
                     </div>
-                    <div class="carousel-inner">
+                    <div class="carousel-inner product-detail-container">
                         {% for image in object.images.all %}
                         <div class="carousel-item {% if forloop.first %}active{% endif %}">
-                            <img src="{{ image.gambar.url }}" class="d-block w-100" alt="Wild Landscape"/>
+                            <img src="{{ image.gambar.url }}" class="product-picture-detail" alt="Wild Landscape"/>
                         </div>
                         {% endfor %}
                     </div>
@@ -41,7 +39,6 @@
                     </button>
                 </div>
             </div>
-            
             <!--Grid column-->
 
             <!--Grid column-->
@@ -49,22 +46,8 @@
                 <!--Content-->
                 <div class="p-4">
                     <div class="mb-3">
-                        <a href="">
-                            <span class="badge bg-dark me-1">{{ object.get_kategori_display }}</span>
-                        </a>
-                        {% if object.label == 'NEW' %}
-                        <a href="">
-                            <span class="badge bg-{{ object.get_label_display }} me-1">New</span>
-                        </a>
-                        {% elif object.label == 'SALE' %}
-                        <a href="">
-                            <span class="badge bg-{{ object.get_label_display }} me-1">Sale</span>
-                        </a>
-                        {% else %}
-                        <a href="">
-                            <span class="badge bg-{{ object.get_label_display }} me-1">Bestseller</span>
-                        </a>
-                        {% endif %}
+                        <span class="badge bg-dark me-1">{{ object.get_kategori_display }}</span>
+                        <span class="badge bg-{{ object.get_label_display }} me-1">{{ object.label }}</span>
                     </div>
 
                     <p class="lead">
@@ -79,14 +62,17 @@
                     </p>
 
                     <p>{{ object.deskripsi }}</p>
-                    <a href="{{ object.get_add_to_cart_url }}" class="btn btn-primary ms-1">
-                        Tambah ke keranjang
-                        <i class="fas fa-shopping-cart ms-1"></i>
-                    </a>
-                    <a href="{{ object.get_remove_from_cart_url }}" class="btn btn-danger ms-1" >
-                        Kurangi keranjang
-                        <i class="fas fa-shopping-cart ms-1"></i>
-                    </a>
+                    
+                    <div class="button-cart">
+                        <a href="{{ object.get_remove_from_cart_url }}" class="button-cart-element left">-</a>
+                        {% if product_quantity %}
+                            <p class="button-cart-quantity">{{ product_quantity }}</p>
+                        {% else %}
+                            <p class="button-cart-quantity">0</p>
+                        {% endif %}
+                        <a href="{{ object.get_add_to_cart_url }}" class="button-cart-element right">+</a>
+                    </div>
+                    
                 </div>
                 <!--Content-->
             </div>

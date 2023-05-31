@@ -2,6 +2,7 @@ from django.conf import settings
 from django.contrib.auth import get_user_model
 from django.db import models
 from django.urls import reverse
+from django.core.exceptions import ValidationError
 
 PILIHAN_KATEGORI = (
     ('S', 'Shirt'),
@@ -49,10 +50,14 @@ class ProdukItem(models.Model):
         return reverse("toko:remove-from-cart", kwargs={
             "slug": self.slug
             })
-    
+# def validate_max_images(value):
+#     product_images = ProdukImage.objects.filter(produk=value.produk)
+#     if product_images.count() >= 3:
+#         raise ValidationError("Maximum 3 images allowed per product.")
+
 class ProdukImage(models.Model):
     produk = models.ForeignKey(ProdukItem, related_name='images', on_delete=models.CASCADE)
-    gambar = models.ImageField(upload_to='product_pics')
+    gambar = models.ImageField(upload_to='product_pics') #, validators=[validate_max_images])
     def __str__(self):
         return self.gambar.name
 

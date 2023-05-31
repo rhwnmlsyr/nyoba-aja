@@ -36,7 +36,18 @@
         border-radius: 1rem;
         margin-bottom: 1rem;
         object-fit: cover;
+        &-detail{
+            object-fit: cover;
+            width: 100%;
+        }
     }
+    &-detail-container{
+        height: 25rem;
+    }
+}
+
+.test{
+    border: 1px solid black;
 }
 
 .home-body{

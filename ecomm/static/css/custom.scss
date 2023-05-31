@@ -35,6 +35,12 @@
 
 a{
     color: black;
+    
+    &.button{
+        // padding: 0.25rem;
+        display: flex;
+        align-items: center;
+    }
     &:hover{
         color: $gold;
         transform: 0.5s;
