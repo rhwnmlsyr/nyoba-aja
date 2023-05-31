@@ -132,3 +132,4 @@ dmypy.json
 .vscode
 ecomm/media/*
 ecomm/static_root
+/ecomm/toko/migrations/

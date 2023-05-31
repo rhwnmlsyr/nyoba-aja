@@ -28,7 +28,7 @@ class ProdukItem(models.Model):
     harga_diskon = models.FloatField(blank=True, null=True)
     slug = models.SlugField(unique=True)
     deskripsi = models.TextField()
-    gambar = models.ImageField(upload_to='product_pics')
+    # gambar = models.ImageField(upload_to='product_pics')
     label = models.CharField(choices=PILIHAN_LABEL, max_length=4)
     kategori = models.CharField(choices=PILIHAN_KATEGORI, max_length=2)
 
@@ -50,6 +50,12 @@ class ProdukItem(models.Model):
             "slug": self.slug
             })
     
+class ProdukImage(models.Model):
+    produk = models.ForeignKey(ProdukItem, related_name='images', on_delete=models.CASCADE)
+    gambar = models.ImageField(upload_to='product_pics')
+    def __str__(self):
+        return self.gambar.name
+
 class OrderProdukItem(models.Model):
     user = models.ForeignKey(User, on_delete=models.CASCADE)
     ordered = models.BooleanField(default=False)

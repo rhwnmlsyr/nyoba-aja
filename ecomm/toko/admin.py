@@ -1,9 +1,13 @@
 from django.contrib import admin
-from .models import ProdukItem, OrderProdukItem, Order, AlamatPengiriman, Payment
+from .models import ProdukItem, OrderProdukItem, Order, AlamatPengiriman, Payment, ProdukImage
+
+class ProdukImageInline(admin.TabularInline):
+    model = ProdukImage
+    extra = 1
 
 class ProdukItemAdmin(admin.ModelAdmin):
-    list_display = ['nama_produk','harga', 'harga_diskon', 'slug',
-                    'deskripsi', 'gambar', 'label', 'kategori']
+    list_display = ['nama_produk', 'harga', 'harga_diskon', 'slug', 'deskripsi', 'label', 'kategori']
+    inlines = [ProdukImageInline]
 
 class OrderProdukItemAdmin(admin.ModelAdmin):
     list_display = ['user', 'ordered', 'produk_item', 'quantity']
