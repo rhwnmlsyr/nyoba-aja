@@ -50,13 +50,25 @@
                         <span class="badge bg-{{ object.get_label_display }} me-1">{{ object.label }}</span>
                     </div>
 
+                    <!-- stars -->
                     <div class="mb-3">
-                        <i class="fa-solid fa-star"></i>
-                        <i class="fa-solid fa-star"></i>
-                        <i class="fa-solid fa-star"></i>
-                        <i class="fa-solid fa-star"></i>
-                        <i class="fa-solid fa-star"></i>
+                        {% if average_rating %}
+                            {% for _ in ""|ljust:average_rating %}
+                                <i class="fa-solid fa-star"></i>
+                            {% endfor %}
+                            {% with decimal_part=average_rating|stringformat:'s'|slice:'2:' %}
+                                {% if decimal_part %}
+                                    <i class="fa-solid fa-star-half"></i>
+                                {% endif %}
+                            {% endwith %}
+                            {% else %}
+                            <p>no reviews yet</p>
+                        {% endif %}
                     </div>
+
+                    {% if reviews.count > 1 %}
+                        <p>{{ reviews.count }} reviews</p>
+                    {% endif %}
 
                     <p class="lead">
                         {% if object.harga_diskon %}
