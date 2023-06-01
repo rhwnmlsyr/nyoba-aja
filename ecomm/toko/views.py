@@ -14,13 +14,13 @@ from django.db.models import Q, Avg, Func
 
 import logging
 from .forms import ReviewForm
-
+from django.core.paginator import Paginator
 
 def filter_view(request):
     logger = logging.getLogger(__name__)
 
     sort_option = request.GET.get('category')
-    
+
     logger.warning(sort_option)
     # Apply sort filter
     if sort_option == 'A':
@@ -30,9 +30,18 @@ def filter_view(request):
     else:
         object_list = ProdukItem.objects.all()
 
+    paginator = Paginator(object_list, 8)  # Paginate the queryset, 8 items per page
+    page_number = request.GET.get('page')
+    page_obj = paginator.get_page(page_number)
+
+    # Preserve filter parameters in pagination links
+    page_obj.filter_parameters = "&category={}".format(sort_option) if sort_option else ""
+
     context = {
-        'object_list': object_list,
+        'object_list': page_obj,  # Use the paginated queryset
         'sort_option': sort_option,
+        'is_paginated': page_obj.has_other_pages(),  # Pass the is_paginated flag to the template
+        'page_obj': page_obj,  # Pass the page_obj for current page information
     }
     return render(request, 'products.html', context)
 
@@ -48,18 +57,23 @@ def search_and_filter_view(request):
     if category:
         object_list = object_list.filter(Q(kategori__iexact=category.upper()))
 
-    context = {
-        'object_list': object_list,
-        'query': query,
-        'category': category
-    }
+    paginator = Paginator(object_list, 8)  # Paginate the queryset, 8 items per page
+    page_number = request.GET.get('page')
+    page_obj = paginator.get_page(page_number)
 
+    context = {
+        'object_list': page_obj,  # Use the paginated queryset
+        'query': query,
+        'category': category,
+        'is_paginated': page_obj.has_other_pages(),  # Pass the is_paginated flag to the template
+        'page_obj': page_obj,  # Pass the page_obj for current page information
+    }
     return render(request, 'products.html', context)
 
 class HomeListView(generic.ListView):
     template_name = 'home.html'
     queryset = ProdukItem.objects.all()
-    paginate_by = 4
+    paginate_by = 8
 
 class ProductDetailView(generic.DetailView):
     template_name = 'product_detail.html'
@@ -201,7 +215,7 @@ class OrderSummaryView(LoginRequiredMixin, generic.TemplateView):
             return render(self.request, template_name, context)
         except ObjectDoesNotExist:
             messages.error(self.request, 'No active orders')
-            return redirect('/')
+            return redirect('order_summary')
 
 def add_to_cart(request, slug):
     if request.user.is_authenticated:
@@ -308,4 +322,4 @@ def paypal_cancel(request):
 class products(generic.ListView):
     template_name = 'products.html'
     queryset = ProdukItem.objects.all()
-    paginate_by = 4
+    paginate_by = 8

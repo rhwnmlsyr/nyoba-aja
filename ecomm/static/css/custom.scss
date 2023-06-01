@@ -154,3 +154,15 @@ input[type="radio"] {
         padding: 0 1rem;
     }
 }
+.product-amount{
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    gap: 5px;
+    padding: 0 5px;
+    & .fa-solid{
+        color: white;
+        font-size: 1rem;
+        margin: 0;
+    }
+}

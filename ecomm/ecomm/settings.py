@@ -56,7 +56,8 @@ INSTALLED_APPS = [
 
     'paypal.standard.ipn',
     'paypal',
-    'compressor'
+    'compressor',
+    'django.contrib.humanize',
 ]
 
 AUTHENTICATION_BACKENDS = [

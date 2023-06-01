@@ -1,5 +1,6 @@
 {% extends 'base.html' %}
 {% load crispy_forms_tags %}
+{% load humanize %}
 
 {% block content%}
 <!--Main layout-->
@@ -91,20 +92,24 @@
                         {% for belanjaan in keranjang.produk_items.all %}
                         <li class="list-group-item d-flex justify-content-between">
                             <div>
-                                <h6 class="my-0">{{ belanjaan.quantity }} x {{ belanjaan.produk_item.nama_produk }}</h6>
-                                <small class="text-muted">{{ belanjaan.produk_item.deskripsi|truncatechars:50 }}</small>
+                                <h6 class="my-0">{{ belanjaan.produk_item.nama_produk }}</h6>
+                                <p>x {{ belanjaan.quantity }}</p>
+                                <!-- <small class="text-muted">{{ belanjaan.produk_item.deskripsi|truncatechars:50 }}</small> -->
                             </div>
                             {% if belanjaan.produk_item.harga_diskon %}
-                            <span class="text-muted">${{ belanjaan.get_total_harga_diskon_item }}
+                            <div>
+                                <s class="text-muted">${{ belanjaan.get_total_harga_item|floatformat:0|intcomma }}</s>
+                                <span>${{ belanjaan.get_total_harga_diskon_item|floatformat:0|intcomma }}
+                            </div>
                             {% else %}
-                            ${{ belanjaan.get_total_harga_item}}
+                                ${{ belanjaan.get_total_harga_item|floatformat:0|intcomma }}
                             {% endif %}
                         </li>
                         {% endfor %}
 
                         <li class="list-group-item d-flex justify-content-between">
                             <span>Total (USD)</span>
-                            <strong class="text-success">${{ keranjang.get_total_harga_order }}</strong>
+                            <strong class="text-success">${{ keranjang.get_total_harga_order|floatformat:0|intcomma }}</strong>
                         </li>
                     </ul>
                     <!-- Cart -->

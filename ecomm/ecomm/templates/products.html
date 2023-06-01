@@ -1,4 +1,6 @@
 {% extends 'base.html' %} {% block content %} 
+{% load humanize %}
+
 <!--Main layout-->
 <main>
     <div class="container">
@@ -7,17 +9,6 @@
             class="navbar navbar-expand-lg navbar-dark mt-3 mb-5 p-2 bg-creme"
         >
             <!-- Container wrapper -->
-            <!-- <form id="filter-form" class="container-fluid">
-                <input style="max-width: 12rem" id="search-input" type="search" class="form-control rounded-0" placeholder="Search Product" aria-label="Search">
-                <select style="max-width: 12rem" id="filter-select" class="form-control rounded-0">
-                    <option value="">All Categories</option>
-                    <option value="option1">Rings</option>
-                    <option value="option2">Necklaces</option>
-                    <option value="option3">Tiara</option>
-                    <option value="option4">Bracelets</option>
-                    <option value="option5">Ankle Bracelets</option>
-                </select>
-            </form> -->
             <form id="filter-form" class="container column" action="{% url 'search_and_filter' %}" method="GET">
                 <div class="filter-container">
                     <!-- Search form input field -->
@@ -25,9 +16,16 @@
                     <!-- Category filter select field -->
                     <select style="max-width: 12rem"  id="category-select" name="category" class="form-control rounded-0">
                         <option value="">All Categories</option>
-                        <option value="S">Shirt</option>
-                        <option value="SW">Sport wear</option>
-                        <option value="OW">Outwear</option>
+                        <option value="N">Necklace</option>
+                        <option value="B">Bracelet</option>
+                        <option value="R">Ring</option>
+                        <option value="E">Earrings</option>
+                        <option value="T">Tiara</option>
+                        <option value="C">Choker</option>
+                        <option value="A">Anklet</option>
+                        <option value="BR">Brooch</option>
+
+
                     </select>
                 </div>
                 <!-- Submit button -->
@@ -89,11 +87,15 @@
                                 <p>{{ pItem.get_kategori_display }}</p>
 
                                 <h3>{{ pItem.nama_produk }}</h3>
-                                <h5 class="price">${% if pItem.harga_diskon %}
-                                    {{ pItem.harga_diskon }}
+                                
+                                {% if pItem.harga_diskon %}
+                                    <s>
+                                        ${{ pItem.harga|floatformat:0 }}
+                                    </s>
+                                    <h5 class="price">${{ pItem.harga_diskon|floatformat:0|intcomma }}</h5>
                                 {% else %}
-                                    {{ pItem.harga }}
-                                {% endif %}</h5>
+                                    <h5 class="price">${{ pItem.harga|floatformat:0|intcomma }}</h5>
+                                {% endif %}
                             </div>
                         </a>
                     </div>
@@ -107,18 +109,11 @@
 
         <!-- Pagination -->
         {% if is_paginated %}
-        <nav
-            aria-label="Page navigation example"
-            class="d-flex justify-content-center mt-3"
-        >
+        <nav aria-label="Page navigation example" class="d-flex justify-content-center mt-3">
             <ul class="pagination">
                 <li class="page-item">
                     {% if page_obj.has_previous %}
-                    <a
-                        class="page-link"
-                        href="{{ request.path }}?page={{ page_obj.previous_page_number }}"
-                        aria-label="Previous"
-                    >
+                    <a class="page-link" href="{{ request.path }}?page={{ page_obj.previous_page_number }}{{ page_obj.filter_parameters }}" aria-label="Previous">
                         <span aria-hidden="true">&laquo;</span>
                     </a>
                     {% endif %}
@@ -128,11 +123,7 @@
                 </li>
                 <li class="page-item">
                     {% if page_obj.has_next %}
-                    <a
-                        class="page-link"
-                        href="{{ request.path }}?page={{ page_obj.next_page_number }}"
-                        aria-label="Next"
-                    >
+                    <a class="page-link" href="{{ request.path }}?page={{ page_obj.next_page_number }}{{ page_obj.filter_parameters }}" aria-label="Next">
                         <span aria-hidden="true">&raquo;</span>
                     </a>
                     {% endif %}
@@ -141,6 +132,7 @@
         </nav>
         {% endif %}
         <!-- Pagination -->
+
         
     </div>
 </main>

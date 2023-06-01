@@ -1,4 +1,5 @@
 {% extends "base.html" %}
+{% load humanize %}
 
 {% block content %}
 <div class="container">
@@ -42,30 +43,25 @@
                 <td>
                     <div>$
                         {% if pItem.produk_item.harga_diskon %}
-                        {{ pItem.produk_item.harga_diskon }}
+                            {{ pItem.produk_item.harga_diskon|floatformat:0|intcomma }}
                         {% else %}
-                        {{ pItem.produk_item.harga }}
+                            {{ pItem.produk_item.harga|floatformat:0|intcomma }}
                         {% endif %}
                     </div>
                 </td>
                 <td>{{ pItem.quantity }}</td>
                 <td>                
                     {% if pItem.produk_item.harga_diskon %}
-                    ${{ pItem.get_total_harga_diskon_item }}
-                    <span class="badge badge-success rounded-pill d-inline">${{ pItem.get_total_hemat_item }} discount</span>
+                    ${{ pItem.get_total_harga_diskon_item|floatformat:0|intcomma }}
+                    <span class="badge badge-success rounded-pill d-inline">${{ pItem.get_total_hemat_item|floatformat:0|intcomma }} discount</span>
                     {% else %}
-                    ${{ pItem.get_total_harga_item }}
+                        ${{ pItem.get_total_harga_item|floatformat:0|intcomma }}
                     {% endif %}
                 </td>
             </tr>
             {% empty %}
             <tr>
-                <td colspan='5'>Keranjang kosong</td>
-            </tr>
-            <tr>
-                <td colspan="5">
-                <a class="btn btn-primary float-end" href="{% url 'toko:home-produk-list' %}">Lanjut belanja</a>
-                </td>
+                <td colspan='5'>Your cart is empty, fill it up <b><a href="{% url 'toko:products' %}">here</a></b></td>
             </tr>
             {% endfor %}
 
@@ -73,9 +69,9 @@
             <tr>
                 <td colspan="4"><b>Total Belanja</b></td>
                 <td>
-                    <b>${{ keranjang.get_total_harga_order }}</b>
+                    <b>${{ keranjang.get_total_harga_order|floatformat:0|intcomma }}</b>
                     {% if keranjang.get_total_hemat_order %}
-                    <span class="badge badge-success">You're saving ${{ keranjang.get_total_hemat_order }}</span>
+                    <span class="badge badge-success">You're saving ${{ keranjang.get_total_hemat_order|floatformat:0|intcomma }}</span>
                     {% endif %}
                 </td>
             </tr>
@@ -83,11 +79,11 @@
             <tr>
                 <td colspan="5">
                 <a class='btn btn-info float-end ml-2' href="{% url 'toko:checkout' %}">Checkout</a>
-                <a class='btn btn-danger' href="{% url 'toko:home-produk-list' %}">Lanjut belanja</a>
+                <!-- <a class='btn btn-danger' href="{% url 'toko:home-produk-list' %}">Cont</a> -->
                 </td>
             </tr>
             {% endif %}
         </tbody>
-  </table>
+    </table>
 </div>
 {% endblock content %}

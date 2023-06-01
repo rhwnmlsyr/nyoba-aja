@@ -1,4 +1,5 @@
 {% extends 'base.html' %}
+{% load humanize %}
 
 {% block content%}
 <!--Main layout-->
@@ -47,7 +48,7 @@
                 <div class="p-4">
                     <div class="mb-3">
                         <span class="badge bg-dark me-1">{{ object.get_kategori_display }}</span>
-                        <span class="badge bg-{{ object.get_label_display }} me-1">{{ object.label }}</span>
+                        <span class="badge bg-dark me-1">{{ object.get_label_display }}</span>
                     </div>
 
                     <!-- stars -->
@@ -57,9 +58,11 @@
                                 <i class="fa-solid fa-star"></i>
                             {% endfor %}
                             {% with decimal_part=average_rating|stringformat:'s'|slice:'2:' %}
-                                {% if decimal_part %}
-                                    <i class="fa-solid fa-star-half"></i>
-                                {% endif %}
+                                {% with decimal_integer=decimal_part|add:'0' %}
+                                    {% if decimal_integer > 4 %}
+                                        <i class="fa-solid fa-star-half"></i>
+                                    {% endif %}
+                                {% endwith %}
                             {% endwith %}
                             {% else %}
                             <p>no reviews yet</p>
@@ -70,26 +73,35 @@
                         <p>{{ reviews.count }} reviews</p>
                     {% endif %}
 
+                    {% if reviews.count == 1 %}
+                        <p>{{ reviews.count }} review</p>
+                    {% endif %}
+                    
+
                     <p class="lead">
                         {% if object.harga_diskon %}
                         <span class="me-1">
-                            <del>${{ object.harga }}</del>
+                            <del>${{ object.harga|floatformat:0|intcomma }}</del>
                         </span>
-                        <span>${{ object.harga_diskon }}</span>
+                        <span>${{ object.harga_diskon|floatformat:0|intcomma }}</span>
                         {% else %}
-                        <span>${{ object.harga }}</span>
+                        <span>${{ object.harga|floatformat:0|intcomma }}</span>
                         {% endif %}
                     </p>
 
                     <p>{{ object.deskripsi }}</p>
                     
+                    <!-- buttons to add/remove from cart -->
                     <div class="button-cart">
                         <a href="{{ object.get_remove_from_cart_url }}" class="button-cart-element left">-</a>
-                        {% if product_quantity %}
-                            <p class="button-cart-quantity">{{ product_quantity }}</p>
-                        {% else %}
-                            <p class="button-cart-quantity">0</p>
-                        {% endif %}
+                        <span class="product-amount">
+                            <i class="fa-solid fa-cart-shopping"></i>
+                            {% if product_quantity %}
+                                <p class="button-cart-quantity">{{ product_quantity }}</p>
+                            {% else %}
+                                <p class="button-cart-quantity">0</p>
+                            {% endif %}
+                        </span>
                         <a href="{{ object.get_add_to_cart_url }}" class="button-cart-element right">+</a>
                     </div>
                     
@@ -101,16 +113,6 @@
         <!--Grid row-->
 
         <hr />
-        <!-- <div>
-            <i class="fa-solid fa-star"></i>
-            <i class="fa-solid fa-star"></i>
-            <i class="fa-solid fa-star"></i>
-            <i class="fa-solid fa-star"></i>
-            <i class="fa-solid fa-star"></i>
-        </div>
-         -->
-        <!-- Display the review form -->
-        <!-- <h2>Leave a Review</h2> -->
         
         <form method="post">
             {% csrf_token %}
@@ -119,11 +121,15 @@
         </form>
 
         <h4>Reviews</h4>
-
+        
         {% for review in reviews %}
-            <p>User: {{ review.user.username }}</p>
-            <p>Rating: {{ review.rating }}</p>
-            <p>Comment: {{ review.comment }}</p>
+            <p>{{ review.user.username }}</p>
+            <!-- <p>Rating: {{ review.rating }}</p> -->
+            {% for _ in ""|ljust:review.rating %}
+                <i class="fa-solid fa-star"></i>
+            {% endfor %}
+            <p>{{ review.comment }}</p>
+            <hr/>
         {% empty %}
             <p>No reviews available.</p>
         {% endfor %}

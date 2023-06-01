@@ -5,15 +5,23 @@ from django.urls import reverse
 from django.core.exceptions import ValidationError
 
 PILIHAN_KATEGORI = (
-    ('S', 'Shirt'),
-    ('SW', 'Sport wear'),
-    ('OW', 'Outwear')
+    ('N', 'Necklace'),
+    ('T', 'Tiara'),
+    ('B', 'Bracelet'),
+    ('R', 'Ring'),
+    ('C', 'Choker'),
+    ('A', 'Anklet'),
+    ('BR', 'Brooch'),
+    ('E', 'Earrings')
 )
 
 PILIHAN_LABEL = (
-    ('NEW', 'primary'),
-    ('SALE', 'info'),
-    ('BEST', 'danger'),
+    ('G', 'Gold'),
+    ('S', 'Silver'),
+    ('B', 'Brass'),
+    ('C', 'Copper'),
+    ('GE', 'Gemstone'),
+    ('O', 'Other')
 )
 
 PILIHAN_PEMBAYARAN = (
