@@ -29,7 +29,6 @@ class ProdukItem(models.Model):
     harga_diskon = models.FloatField(blank=True, null=True)
     slug = models.SlugField(unique=True)
     deskripsi = models.TextField()
-    # gambar = models.ImageField(upload_to='product_pics')
     label = models.CharField(choices=PILIHAN_LABEL, max_length=4)
     kategori = models.CharField(choices=PILIHAN_KATEGORI, max_length=2)
 
@@ -50,11 +49,24 @@ class ProdukItem(models.Model):
         return reverse("toko:remove-from-cart", kwargs={
             "slug": self.slug
             })
-# def validate_max_images(value):
-#     product_images = ProdukImage.objects.filter(produk=value.produk)
-#     if product_images.count() >= 3:
-#         raise ValidationError("Maximum 3 images allowed per product.")
 
+PILIHAN_RATING = (
+    ('1', 1),
+    ('2', 2),
+    ('3', 3),
+    ('4', 4),
+    ('5', 5),
+)
+
+class Review(models.Model):
+    user = models.ForeignKey(User, on_delete=models.CASCADE)
+    produk_item = models.ForeignKey(ProdukItem, on_delete=models.CASCADE)
+    rating = models.IntegerField(choices=PILIHAN_RATING)
+    comment = models.TextField()
+
+    def __str__(self):
+        return f"Review by {self.user} for {self.produk_item.nama_produk}"
+    
 class ProdukImage(models.Model):
     produk = models.ForeignKey(ProdukItem, related_name='images', on_delete=models.CASCADE)
     gambar = models.ImageField(upload_to='product_pics') #, validators=[validate_max_images])

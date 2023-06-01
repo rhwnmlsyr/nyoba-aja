@@ -54,7 +54,7 @@
                     <div class="col-lg-3 col-md-6 mb-4">
                         <a href="{{ pItem.get_absolute_url }}">
                             <div class="product-container">
-                                <div id="carouselExampleCaptions-{{ forloop.counter }}" class="carousel slide carousel-fade" data-mdb-ride="carousel">
+                                <div id="carouselExampleCaptions-{{ forloop.counter }}" class="carousel slide carousel-fade inside" data-mdb-ride="carousel">
                                     <div class="carousel-indicators">
                                         {% for image in pItem.images.all %}
                                         <button

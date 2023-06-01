@@ -50,6 +50,14 @@
                         <span class="badge bg-{{ object.get_label_display }} me-1">{{ object.label }}</span>
                     </div>
 
+                    <div class="mb-3">
+                        <i class="fa-solid fa-star"></i>
+                        <i class="fa-solid fa-star"></i>
+                        <i class="fa-solid fa-star"></i>
+                        <i class="fa-solid fa-star"></i>
+                        <i class="fa-solid fa-star"></i>
+                    </div>
+
                     <p class="lead">
                         {% if object.harga_diskon %}
                         <span class="me-1">
@@ -81,7 +89,67 @@
         <!--Grid row-->
 
         <hr />
+        <!-- <div>
+            <i class="fa-solid fa-star"></i>
+            <i class="fa-solid fa-star"></i>
+            <i class="fa-solid fa-star"></i>
+            <i class="fa-solid fa-star"></i>
+            <i class="fa-solid fa-star"></i>
+        </div>
+         -->
+        <!-- Display the review form -->
+        <!-- <h2>Leave a Review</h2> -->
+        
+        <form method="post">
+            {% csrf_token %}
+            {{ review_form }}
+            <button type="submit">Submit Review</button>
+        </form>
+
+        <h4>Reviews</h4>
+
+        {% for review in reviews %}
+            <p>User: {{ review.user.username }}</p>
+            <p>Rating: {{ review.rating }}</p>
+            <p>Comment: {{ review.comment }}</p>
+        {% empty %}
+            <p>No reviews available.</p>
+        {% endfor %}
+        
     </div>
 </main>
 <!--Main layout-->
+<script>
+    // Get all radio buttons with the class 'rating-input'
+    const radioButtons = document.querySelectorAll('input[type="radio"].rating-input');
+
+    // Loop through each radio button
+    radioButtons.forEach(radioButton => {
+        // Create a new i element
+        const iconElement = document.createElement('i');
+        // Add the 'fa-solid' and 'fa-star' classes to the icon element
+        iconElement.classList.add('fa-solid', 'fa-star');
+        // Insert the icon element after the radio button
+        radioButton.insertAdjacentElement('afterend', iconElement);
+    });
+
+    // Get all the .fa-star elements inside .rating-input labels
+    const stars = document.querySelectorAll('.rating-input label .fa-star');
+
+    // Add click event listener to each star
+    stars.forEach((star, index) => {
+        star.addEventListener('click', () => {
+            // Add 'checked' class to the clicked star and all previous stars
+            for (let i = 0; i <= index; i++) {
+                stars[i].classList.add('checked');
+            }
+
+            // Remove 'checked' class from the subsequent stars
+            for (let i = index + 1; i < stars.length; i++) {
+                stars[i].classList.remove('checked');
+            }
+        });
+    });
+
+</script>
 {% endblock content%}

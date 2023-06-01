@@ -7,12 +7,14 @@ from django.utils import timezone
 from django.views import generic
 from paypal.standard.forms import PayPalPaymentsForm
 
-from .forms import CheckoutForm
-from .models import ProdukItem, OrderProdukItem, Order, AlamatPengiriman, Payment
-
+from .forms import CheckoutForm, ReviewForm
+from .models import ProdukItem, OrderProdukItem, Order, AlamatPengiriman, Payment, Review
+from django.http import HttpResponseRedirect
 from django.db.models import Q
 
 import logging
+from .forms import ReviewForm
+
 
 def filter_view(request):
     logger = logging.getLogger(__name__)
@@ -67,6 +69,7 @@ class ProductDetailView(generic.DetailView):
         context = super().get_context_data(**kwargs)
         if self.request.user.is_authenticated:
             product = self.get_object()
+            reviews = Review.objects.filter(produk_item=product)
             order_query = Order.objects.filter(user=self.request.user, ordered=False)
             if order_query.exists():
                 order = order_query[0]
@@ -74,7 +77,30 @@ class ProductDetailView(generic.DetailView):
                 if order_produk_item:
                     product_quantity = order_produk_item.quantity
                     context['product_quantity'] = product_quantity
+        context['review_form'] = ReviewForm()
+        context['reviews'] = reviews
         return context
+    def post(self, request, *args, **kwargs):
+        # Handle form submission
+        form = ReviewForm(request.POST)
+        if form.is_valid():
+            product = self.get_object()
+            rating = form.cleaned_data['rating']
+            comment = form.cleaned_data['comment']
+            user = self.request.user
+
+            # Create a new review instance
+            review = Review.objects.create(
+                user=user,
+                produk_item=product,
+                rating=rating,
+                comment=comment
+            )
+
+            return redirect('toko:produk-detail', slug=product.slug)
+        else:
+            # If the form is invalid, re-render the template with the form and existing context
+            return self.render_to_response(self.get_context_data(form=form))
 
 class CheckoutView(LoginRequiredMixin, generic.FormView):
     def get(self, *args, **kwargs):
