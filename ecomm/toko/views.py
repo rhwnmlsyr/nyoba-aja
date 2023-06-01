@@ -10,7 +10,7 @@ from paypal.standard.forms import PayPalPaymentsForm
 from .forms import CheckoutForm, ReviewForm
 from .models import ProdukItem, OrderProdukItem, Order, AlamatPengiriman, Payment, Review
 from django.http import HttpResponseRedirect
-from django.db.models import Q
+from django.db.models import Q, Avg, Func
 
 import logging
 from .forms import ReviewForm
@@ -77,9 +77,14 @@ class ProductDetailView(generic.DetailView):
                 if order_produk_item:
                     product_quantity = order_produk_item.quantity
                     context['product_quantity'] = product_quantity
+        
+        product = self.get_object()
+        average_rating = Review.objects.filter(produk_item=product).aggregate(avg_rating=Func(Avg('rating'), function='ROUND', template='%(function)s(%(expressions)s, 1)'))
+        context['average_rating'] = average_rating['avg_rating']
         context['review_form'] = ReviewForm()
         context['reviews'] = reviews
         return context
+
     def post(self, request, *args, **kwargs):
         # Handle form submission
         form = ReviewForm(request.POST)

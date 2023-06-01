@@ -52,7 +52,7 @@
                 <td>                
                     {% if pItem.produk_item.harga_diskon %}
                     ${{ pItem.get_total_harga_diskon_item }}
-                    <span class="badge badge-danger rounded-pill d-inline">Hemat ${{ pItem.get_total_hemat_item }}</span>
+                    <span class="badge badge-success rounded-pill d-inline">${{ pItem.get_total_hemat_item }} discount</span>
                     {% else %}
                     ${{ pItem.get_total_harga_item }}
                     {% endif %}
@@ -72,9 +72,10 @@
             {% if keranjang.get_total_harga_order %}
             <tr>
                 <td colspan="4"><b>Total Belanja</b></td>
-                <td><b>${{ keranjang.get_total_harga_order }}</b>
+                <td>
+                    <b>${{ keranjang.get_total_harga_order }}</b>
                     {% if keranjang.get_total_hemat_order %}
-                    <span class="badge badge-danger">Hemat ${{ keranjang.get_total_hemat_order }}</span>
+                    <span class="badge badge-success">You're saving ${{ keranjang.get_total_hemat_order }}</span>
                     {% endif %}
                 </td>
             </tr>
