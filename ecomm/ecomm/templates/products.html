@@ -1,20 +1,20 @@
-{% extends 'base.html' %} {% block content %} 
+{% extends 'base.html' %} {% block content %}
 {% load humanize %}
 
 <!--Main layout-->
 <main>
     <div class="container">
         <!-- Navbar -->
-        <nav
-            class="navbar navbar-expand-lg navbar-dark mt-3 mb-5 p-2 bg-creme"
-        >
+        <nav class="navbar navbar-expand-lg navbar-dark mt-3 mb-5 p-2 bg-creme">
             <!-- Container wrapper -->
             <form id="filter-form" class="container column" action="{% url 'search_and_filter' %}" method="GET">
                 <div class="filter-container">
                     <!-- Search form input field -->
-                    <input style="max-width: 12rem"  type="search" name="query" class="form-control rounded-0" placeholder="Search Product" aria-label="Search">
+                    <input style="max-width: 12rem" type="search" name="query" class="form-control rounded-0"
+                        placeholder="Search Product" aria-label="Search">
                     <!-- Category filter select field -->
-                    <select style="max-width: 12rem"  id="category-select" name="category" class="form-control rounded-0">
+                    <select style="max-width: 12rem" id="category-select" name="category"
+                        class="form-control rounded-0">
                         <option value="">All Categories</option>
                         <option value="N">Necklace</option>
                         <option value="B">Bracelet</option>
@@ -29,19 +29,23 @@
                     </select>
                 </div>
                 <!-- Submit button -->
-                <button type="submit" class="button-search"><i class="fa-solid fa-magnifying-glass"></i> Search & Filter</button>
+                <button type="submit" class="button-search"><i class="fa-solid fa-magnifying-glass"></i> Search &
+                    Filter</button>
             </form>
         </nav>
         <!-- Navbar -->
 
         <form id="sort-form" action="{% url 'filter' %}">
-            <select style="max-width: 12rem"  id="sort-select" name="category" class="form-control rounded-0">
+            <select style="max-width: 12rem" id="sort-select" name="category" class="form-control rounded-0">
                 <option selected>Sort By</option>
                 <option value="A">Price (Low to High)</option>
                 <option value="B">Price (High to Low)</option>
+                <option value="C">Review Count</option>
+                <option value="D">Average Score</option>
+
             </select>
         </form>
-        
+
 
         <!-- Products -->
         <section>
@@ -52,34 +56,38 @@
                     <div class="col-lg-3 col-md-6 mb-4">
                         <a href="{{ pItem.get_absolute_url }}">
                             <div class="product-container">
-                                <div id="carouselExampleCaptions-{{ forloop.counter }}" class="carousel slide carousel-fade inside" data-mdb-ride="carousel">
+                                <div id="carouselExampleCaptions-{{ forloop.counter }}"
+                                    class="carousel slide carousel-fade inside" data-mdb-ride="carousel">
                                     <div class="carousel-indicators">
                                         {% for image in pItem.images.all %}
-                                        <button
-                                                type="button"
-                                                data-mdb-target="#carouselExampleCaptions-{{ forloop.counter }}"
-                                                data-mdb-slide-to="{{ forloop.counter0 }}"
-                                                aria-label="Slide {{ forloop.counter }}"
-                                                class="{% if forloop.first %}active{% endif %}"
-                                                aria-current="true"
-                                        ></button>
+                                        <button type="button"
+                                            data-mdb-target="#carouselExampleCaptions-{{ forloop.counter }}"
+                                            data-mdb-slide-to="{{ forloop.counter0 }}"
+                                            aria-label="Slide {{ forloop.counter }}"
+                                            class="{% if forloop.first %}active{% endif %}"
+                                            aria-current="true"></button>
                                         {% endfor %}
 
                                     </div>
                                     <div class="carousel-inner product-picture">
                                         {% for image in pItem.images.all %}
                                         <div class="carousel-item {% if forloop.first %}active{% endif %}">
-                                            <img src="{{ image.gambar.url }}" class="product-picture" alt="Wild Landscape"/>
+                                            <img src="{{ image.gambar.url }}" class="product-picture"
+                                                alt="Wild Landscape" />
                                             <div class="mask"></div>
                                         </div>
                                         {% endfor %}
                                     </div>
 
-                                    <button class="carousel-control-prev" type="button" data-mdb-target="#carouselExampleCaptions-{{ forloop.counter }}" data-mdb-slide="prev">
+                                    <button class="carousel-control-prev" type="button"
+                                        data-mdb-target="#carouselExampleCaptions-{{ forloop.counter }}"
+                                        data-mdb-slide="prev">
                                         <i class="fa-solid fa-chevron-left"></i>
                                         <span class="visually-hidden">Previous</span>
                                     </button>
-                                    <button class="carousel-control-next" type="button" data-mdb-target="#carouselExampleCaptions-{{ forloop.counter }}" data-mdb-slide="next">
+                                    <button class="carousel-control-next" type="button"
+                                        data-mdb-target="#carouselExampleCaptions-{{ forloop.counter }}"
+                                        data-mdb-slide="next">
                                         <i class="fa-solid fa-chevron-right"></i>
                                         <span class="visually-hidden">Next</span>
                                     </button>
@@ -87,14 +95,34 @@
                                 <p>{{ pItem.get_kategori_display }}</p>
 
                                 <h3>{{ pItem.nama_produk }}</h3>
-                                
-                                {% if pItem.harga_diskon %}
-                                    <s>
-                                        ${{ pItem.harga|floatformat:0 }}
-                                    </s>
-                                    <h5 class="price">${{ pItem.harga_diskon|floatformat:0|intcomma }}</h5>
+
+                                {% if pItem.average_rating > 0 %}
+                                {% for _ in ""|ljust:pItem.average_rating %}
+                                <i class="fa-solid fa-star"></i>
+                                {% endfor %}
+                                {% with decimal_part=pItem.average_rating|stringformat:'s'|slice:'2:' %}
+                                {% with decimal_integer=decimal_part|add:'0' %}
+                                {% if decimal_integer > 4 %}
+                                <i class="fa-solid fa-star-half"></i>
+                                {% endif %}
+                                {% endwith %}
+                                {% endwith %}
+                                {% endif %}
+
+
+                                {% if pItem.rating_count > 0 %}
+                                <h4>{{ pItem.rating_count }} reviews</h4>
                                 {% else %}
-                                    <h5 class="price">${{ pItem.harga|floatformat:0|intcomma }}</h5>
+                                <h4>No reviews yet</h4>
+                                {% endif %}
+
+                                {% if pItem.harga_diskon %}
+                                <s>
+                                    ${{ pItem.harga|floatformat:0 }}
+                                </s>
+                                <h5 class="price">${{ pItem.harga_diskon|floatformat:0|intcomma }}</h5>
+                                {% else %}
+                                <h5 class="price">${{ pItem.harga|floatformat:0|intcomma }}</h5>
                                 {% endif %}
                             </div>
                         </a>
@@ -113,7 +141,9 @@
             <ul class="pagination">
                 <li class="page-item">
                     {% if page_obj.has_previous %}
-                    <a class="page-link" href="{{ request.path }}?page={{ page_obj.previous_page_number }}{{ page_obj.filter_parameters }}" aria-label="Previous">
+                    <a class="page-link"
+                        href="{{ request.path }}?page={{ page_obj.previous_page_number }}{{ page_obj.filter_parameters }}"
+                        aria-label="Previous">
                         <span aria-hidden="true">&laquo;</span>
                     </a>
                     {% endif %}
@@ -123,7 +153,9 @@
                 </li>
                 <li class="page-item">
                     {% if page_obj.has_next %}
-                    <a class="page-link" href="{{ request.path }}?page={{ page_obj.next_page_number }}{{ page_obj.filter_parameters }}" aria-label="Next">
+                    <a class="page-link"
+                        href="{{ request.path }}?page={{ page_obj.next_page_number }}{{ page_obj.filter_parameters }}"
+                        aria-label="Next">
                         <span aria-hidden="true">&raquo;</span>
                     </a>
                     {% endif %}
@@ -133,7 +165,7 @@
         {% endif %}
         <!-- Pagination -->
 
-        
+
     </div>
 </main>
 <!--Main layout-->
@@ -141,10 +173,10 @@
 
 <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
 <script>
-  $(document).ready(function() {
-    $('#sort-select').on('change', function() {
-      $('#sort-form').submit();
+    $(document).ready(function () {
+        $('#sort-select').on('change', function () {
+            $('#sort-form').submit();
+        });
     });
-  });
 </script>
 {% endblock content %}

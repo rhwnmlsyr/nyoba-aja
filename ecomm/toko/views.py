@@ -10,7 +10,7 @@ from paypal.standard.forms import PayPalPaymentsForm
 from .forms import CheckoutForm, ReviewForm
 from .models import ProdukItem, OrderProdukItem, Order, AlamatPengiriman, Payment, Review
 from django.http import HttpResponseRedirect
-from django.db.models import Q, Avg, Func
+from django.db.models import Q, Avg, Func, Count
 
 import logging
 from .forms import ReviewForm
@@ -27,6 +27,10 @@ def filter_view(request):
         object_list = ProdukItem.objects.order_by('harga')
     elif sort_option == 'B':
         object_list = ProdukItem.objects.order_by('-harga')
+    elif sort_option == 'C':
+        object_list = ProdukItem.objects.annotate(review_count=Count('review')).order_by('-review_count')
+    elif sort_option == 'D':
+        object_list = ProdukItem.objects.annotate(average_score=Avg('review__rating')).order_by('-average_score')
     else:
         object_list = ProdukItem.objects.all()
 

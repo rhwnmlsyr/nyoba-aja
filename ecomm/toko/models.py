@@ -3,10 +3,10 @@ from django.contrib.auth import get_user_model
 from django.db import models
 from django.urls import reverse
 from django.core.exceptions import ValidationError
+from django.db.models import Avg, Count
 
 PILIHAN_KATEGORI = (
     ('N', 'Necklace'),
-    ('T', 'Tiara'),
     ('B', 'Bracelet'),
     ('R', 'Ring'),
     ('C', 'Choker'),
@@ -57,6 +57,16 @@ class ProdukItem(models.Model):
         return reverse("toko:remove-from-cart", kwargs={
             "slug": self.slug
             })
+
+    def average_rating(self):
+        reviews = Review.objects.filter(produk_item=self)
+        if reviews.exists():
+            average = reviews.aggregate(avg_rating=Avg('rating'))['avg_rating']
+            return round(average, 2)  # Round to two decimal places
+        return 0  # No reviews yet
+    
+    def rating_count(self):
+        return Review.objects.filter(produk_item=self).count()
 
 PILIHAN_RATING = (
     ('1', 1),
