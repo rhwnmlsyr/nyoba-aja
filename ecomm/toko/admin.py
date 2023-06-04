@@ -1,5 +1,5 @@
 from django.contrib import admin
-from .models import ProdukItem, OrderProdukItem, Order, AlamatPengiriman, Payment, ProdukImage
+from .models import ProdukItem, OrderProdukItem, Order, AlamatPengiriman, Payment, ProdukImage, Review
 
 class ProdukImageInline(admin.TabularInline):
     model = ProdukImage
@@ -26,3 +26,4 @@ admin.site.register(OrderProdukItem, OrderProdukItemAdmin)
 admin.site.register(Order, OrderAdmin)
 admin.site.register(AlamatPengiriman, AlamatPengirimanAdmin)
 admin.site.register(Payment, PaymentAdmin)
+admin.site.register(Review)

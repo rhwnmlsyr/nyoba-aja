@@ -95,12 +95,15 @@ class ProductDetailView(generic.DetailView):
                 if order_produk_item:
                     product_quantity = order_produk_item.quantity
                     context['product_quantity'] = product_quantity
+            context['reviews'] = reviews
+            user_reviewed = Review.objects.filter(produk_item=product, user=self.request.user).exists()
+            context['user_reviewed'] = user_reviewed
+            
         
         product = self.get_object()
         average_rating = Review.objects.filter(produk_item=product).aggregate(avg_rating=Func(Avg('rating'), function='ROUND', template='%(function)s(%(expressions)s, 1)'))
         context['average_rating'] = average_rating['avg_rating']
         context['review_form'] = ReviewForm()
-        context['reviews'] = reviews
         return context
 
     def post(self, request, *args, **kwargs):

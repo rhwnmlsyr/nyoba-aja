@@ -8,33 +8,32 @@
         <!--Grid row-->
         <div class="row">
             <!--Grid column-->
-            <strong><p style="font-size: 20px;">{{ object.nama_produk }}</p></strong>
+            <strong>
+                <p style="font-size: 20px;">{{ object.nama_produk }}</p>
+            </strong>
             <div class="col-md-6 mb-4">
                 <div id="carouselExampleIndicators" class="carousel slide" data-mdb-ride="carousel">
                     <div class="carousel-indicators">
                         {% for image in object.images.all %}
-                        <button
-                            type="button"
-                            data-mdb-target="#carouselExampleIndicators"
-                            data-mdb-slide-to="{{ forloop.counter0 }}"
-                            class="{% if forloop.first %}active{% endif %}"
-                            aria-current="true"
-                            aria-label="Slide {{ forloop.counter }}"
-                        ></button>
+                        <button type="button" data-mdb-target="#carouselExampleIndicators"
+                            data-mdb-slide-to="{{ forloop.counter0 }}" class="{% if forloop.first %}active{% endif %}"
+                            aria-current="true" aria-label="Slide {{ forloop.counter }}"></button>
                         {% endfor %}
                     </div>
                     <div class="carousel-inner product-detail-container">
                         {% for image in object.images.all %}
                         <div class="carousel-item {% if forloop.first %}active{% endif %}">
-                            <img src="{{ image.gambar.url }}" class="product-picture-detail" alt="Wild Landscape"/>
+                            <img src="{{ image.gambar.url }}" class="product-picture-detail" alt="Wild Landscape" />
                         </div>
                         {% endfor %}
                     </div>
-                    <button class="carousel-control-prev" type="button" data-mdb-target="#carouselExampleIndicators" data-mdb-slide="prev">
+                    <button class="carousel-control-prev" type="button" data-mdb-target="#carouselExampleIndicators"
+                        data-mdb-slide="prev">
                         <i class="fa-solid fa-chevron-left"></i>
                         <span class="visually-hidden">Previous</span>
                     </button>
-                    <button class="carousel-control-next" type="button" data-mdb-target="#carouselExampleIndicators" data-mdb-slide="next">
+                    <button class="carousel-control-next" type="button" data-mdb-target="#carouselExampleIndicators"
+                        data-mdb-slide="next">
                         <i class="fa-solid fa-chevron-right"></i>
                         <span class="visually-hidden">Next</span>
                     </button>
@@ -54,29 +53,32 @@
                     <!-- stars -->
                     <div class="mb-3">
                         {% if average_rating %}
-                            {% for _ in ""|ljust:average_rating %}
-                                <i class="fa-solid fa-star"></i>
-                            {% endfor %}
-                            {% with decimal_part=average_rating|stringformat:'s'|slice:'2:' %}
-                                {% with decimal_integer=decimal_part|add:'0' %}
-                                    {% if decimal_integer > 4 %}
-                                        <i class="fa-solid fa-star-half"></i>
-                                    {% endif %}
-                                {% endwith %}
-                            {% endwith %}
-                            {% else %}
-                            <p>no reviews yet</p>
+                        {% for _ in ""|ljust:average_rating %}
+                        <i class="fa-solid fa-star"></i>
+                        {% endfor %}
+                        {% with decimal_part=average_rating|stringformat:'s'|slice:'2:' %}
+                        {% with decimal_integer=decimal_part|add:'0' %}
+                        {% if decimal_integer > 4 %}
+                        <i class="fa-solid fa-star-half"></i>
+                        {% endif %}
+                        {% endwith %}
+                        {% endwith %}
+                        {% else %}
+                        <p>no reviews yet</p>
                         {% endif %}
                     </div>
 
+                    {% if reviews.count %}
+
                     {% if reviews.count > 1 %}
-                        <p>{{ reviews.count }} reviews</p>
+                    <p>{{ reviews.count }} reviews</p>
                     {% endif %}
 
                     {% if reviews.count == 1 %}
-                        <p>{{ reviews.count }} review</p>
+                    <p>{{ reviews.count }} review</p>
                     {% endif %}
-                    
+
+                    {% endif %}
 
                     <p class="lead">
                         {% if object.harga_diskon %}
@@ -90,21 +92,21 @@
                     </p>
 
                     <p>{{ object.deskripsi }}</p>
-                    
+
                     <!-- buttons to add/remove from cart -->
                     <div class="button-cart">
                         <a href="{{ object.get_remove_from_cart_url }}" class="button-cart-element left">-</a>
                         <span class="product-amount">
                             <i class="fa-solid fa-cart-shopping"></i>
                             {% if product_quantity %}
-                                <p class="button-cart-quantity">{{ product_quantity }}</p>
+                            <p class="button-cart-quantity">{{ product_quantity }}</p>
                             {% else %}
-                                <p class="button-cart-quantity">0</p>
+                            <p class="button-cart-quantity">0</p>
                             {% endif %}
                         </span>
                         <a href="{{ object.get_add_to_cart_url }}" class="button-cart-element right">+</a>
                     </div>
-                    
+
                 </div>
                 <!--Content-->
             </div>
@@ -113,27 +115,32 @@
         <!--Grid row-->
 
         <hr />
-        
+        {% if request.user.is_authenticated %}
+        {% if not user_reviewed %}
         <form method="post">
             {% csrf_token %}
             {{ review_form }}
             <button type="submit">Submit Review</button>
         </form>
+        {% else %}
+        <p>Thank you for submitting a review for this product.</p>
+        {% endif %}
+        {% endif %}
 
         <h4>Reviews</h4>
-        
+
         {% for review in reviews %}
-            <p>{{ review.user.username }}</p>
-            <!-- <p>Rating: {{ review.rating }}</p> -->
-            {% for _ in ""|ljust:review.rating %}
-                <i class="fa-solid fa-star"></i>
-            {% endfor %}
-            <p>{{ review.comment }}</p>
-            <hr/>
-        {% empty %}
-            <p>No reviews available.</p>
+        <p>{{ review.user.username }}</p>
+        <!-- <p>Rating: {{ review.rating }}</p> -->
+        {% for _ in ""|ljust:review.rating %}
+        <i class="fa-solid fa-star"></i>
         {% endfor %}
-        
+        <p>{{ review.comment }}</p>
+        <hr />
+        {% empty %}
+        <p>No reviews available.</p>
+        {% endfor %}
+
     </div>
 </main>
 <!--Main layout-->
