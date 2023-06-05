@@ -100,7 +100,7 @@
                                 {% for _ in ""|ljust:pItem.average_rating %}
                                 <i class="fa-solid fa-star"></i>
                                 {% endfor %}
-                                {% with decimal_part=pItem.average_rating|stringformat:'s'|slice:'2:' %}
+                                {% with decimal_part=pItem.average_rating|stringformat:'s'|slice:'2:3' %}
                                 {% with decimal_integer=decimal_part|add:'0' %}
                                 {% if decimal_integer > 4 %}
                                 <i class="fa-solid fa-star-half"></i>

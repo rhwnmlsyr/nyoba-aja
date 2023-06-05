@@ -49,14 +49,13 @@
                         <span class="badge bg-dark me-1">{{ object.get_kategori_display }}</span>
                         <span class="badge bg-dark me-1">{{ object.get_label_display }}</span>
                     </div>
-
                     <!-- stars -->
                     <div class="mb-3">
                         {% if average_rating %}
                         {% for _ in ""|ljust:average_rating %}
                         <i class="fa-solid fa-star"></i>
                         {% endfor %}
-                        {% with decimal_part=average_rating|stringformat:'s'|slice:'2:' %}
+                        {% with decimal_part=average_rating|stringformat:'s'|slice:'2:3' %}
                         {% with decimal_integer=decimal_part|add:'0' %}
                         {% if decimal_integer > 4 %}
                         <i class="fa-solid fa-star-half"></i>
