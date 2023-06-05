@@ -3,6 +3,7 @@ from django.conf import settings
 from django.contrib import messages
 from django.contrib.auth.mixins import LoginRequiredMixin
 from django.core.exceptions import ObjectDoesNotExist
+from django.http import HttpResponse, HttpResponseRedirect, JsonResponse
 from django.shortcuts import get_object_or_404, redirect, render, reverse
 from django.utils import timezone
 from django.views import generic
@@ -350,8 +351,32 @@ class OrderSummaryView(LoginRequiredMixin, generic.TemplateView):
             messages.error(self.request, 'No active orders')
             return redirect('order_summary')
 
+    def post(self, request, *args, **kwargs):
+        if 'item_id' in request.POST:
+            item_id = request.POST['item_id']
+            action = request.POST.get('action')
+
+            try:
+                order_item = Order.objects.get(id=item_id, user=self.request.user, ordered=False)
+                if action == 'remove':
+                    order_item.quantity -= 1
+                    if order_item.quantity <= 0:
+                        order_item.delete()
+                    else:
+                        order_item.save()
+                    messages.success(request, 'Item removed from cart.')
+                elif action == 'add':
+                    order_item.quantity += 1
+                    order_item.save()
+                    messages.success(request, 'Item added to cart.')
+            except Order.DoesNotExist:
+                messages.error(request, 'Item does not exist.')
+        
+        return redirect('order_summary')
+
 def add_to_cart(request, slug):
     if request.user.is_authenticated:
+        referer_url = request.META.get('HTTP_REFERER')
         produk_item = get_object_or_404(ProdukItem, slug=slug)
         order_produk_item, _ = OrderProdukItem.objects.get_or_create(
             produk_item=produk_item,
@@ -366,22 +391,29 @@ def add_to_cart(request, slug):
                 order_produk_item.save()
                 pesan = f"You have { order_produk_item.quantity } {order_produk_item.produk_item.nama_produk} in your cart"
                 messages.info(request, pesan)
+                if referer_url == 'http://127.0.0.1:8000/order-summary/':
+                    return HttpResponseRedirect(referer_url)
                 return redirect('toko:produk-detail', slug = slug)
             else:
                 order.produk_items.add(order_produk_item)
                 messages.info(request, f'{order_produk_item.produk_item.nama_produk} has been added to your cart')
+                if referer_url == 'http://127.0.0.1:8000/order-summary/':
+                    return HttpResponseRedirect(referer_url)
                 return redirect('toko:produk-detail', slug = slug)
         else:
             tanggal_order = timezone.now()
             order = Order.objects.create(user=request.user, tanggal_order=tanggal_order)
             order.produk_items.add(order_produk_item)
             messages.info(request, f'{order_produk_item.produk_item.nama_produk} has been added to your cart')
+            if referer_url == 'http://127.0.0.1:8000/order-summary/':
+                return HttpResponseRedirect(referer_url)
             return redirect('toko:produk-detail', slug = slug)
     else:
         return redirect(f'/accounts/login?next={request.path}')
 
 def remove_from_cart(request, slug):
     if request.user.is_authenticated:
+        referer_url = request.META.get('HTTP_REFERER')
         produk_item = get_object_or_404(ProdukItem, slug=slug)
         order_query = Order.objects.filter(
             user=request.user, ordered=False
@@ -390,11 +422,6 @@ def remove_from_cart(request, slug):
             order = order_query[0]
             if order.produk_items.filter(produk_item__slug=produk_item.slug).exists():
                 try: 
-                    # order_produk_item = OrderProdukItem.objects.filter(
-                    #     produk_item=produk_item,
-                    #     user=request.user,
-                    #     ordered=False
-                    # )[0]
                     order_produk_item = order.produk_items.get(produk_item=produk_item, ordered=False)
                     if order_produk_item.quantity > 1:
                         order_produk_item.quantity -= 1
@@ -406,14 +433,55 @@ def remove_from_cart(request, slug):
                         pesan = f"{order_produk_item.produk_item.nama_produk} removed from cart"
 
                     messages.info(request, pesan)
+                    if referer_url == 'http://127.0.0.1:8000/order-summary/':
+                        return HttpResponseRedirect(referer_url)
                     return redirect('toko:produk-detail',slug = slug)
                 except ObjectDoesNotExist:
                     print(f'Error: {order_produk_item.produk_item.nama_produk} does not exist')
             else:
                 messages.info(request, f'This item does not exist in your cart')
+                if referer_url == 'http://127.0.0.1:8000/order-summary/':
+                    return HttpResponseRedirect(referer_url)    
                 return redirect('toko:produk-detail',slug = slug)
         else:
             messages.info(request, f'No active orders of {order_produk_item.produk_item.nama_produk}')
+            if referer_url == 'http://127.0.0.1:8000/order-summary/':
+                return HttpResponseRedirect(referer_url)
+            return redirect('toko:produk-detail',slug = slug)
+    else:
+        return redirect(f'/accounts/login?next={request.path}')
+
+def remove_all_from_cart(request, slug):
+    if request.user.is_authenticated:
+        referer_url = request.META.get('HTTP_REFERER')
+        produk_item = get_object_or_404(ProdukItem, slug=slug)
+        order_query = Order.objects.filter(
+            user=request.user, ordered=False
+        )
+        if order_query.exists():
+            order = order_query[0]
+            if order.produk_items.filter(produk_item__slug=produk_item.slug).exists():
+                try: 
+                    order_produk_item = order.produk_items.get(produk_item=produk_item, ordered=False)
+                    order.produk_items.remove(order_produk_item)
+                    order_produk_item.delete()
+                    pesan = f"{order_produk_item.produk_item.nama_produk} removed from cart"
+
+                    messages.info(request, pesan)
+                    if referer_url == 'http://127.0.0.1:8000/order-summary/':
+                        return HttpResponseRedirect(referer_url)
+                    return redirect('toko:produk-detail',slug = slug)
+                except ObjectDoesNotExist:
+                    print(f'Error: {order_produk_item.produk_item.nama_produk} does not exist')
+            else:
+                messages.info(request, f'This item does not exist in your cart')
+                if referer_url == 'http://127.0.0.1:8000/order-summary/':
+                    return HttpResponseRedirect(referer_url)    
+                return redirect('toko:produk-detail',slug = slug)
+        else:
+            messages.info(request, f'No active orders of {order_produk_item.produk_item.nama_produk}')
+            if referer_url == 'http://127.0.0.1:8000/order-summary/':
+                return HttpResponseRedirect(referer_url)
             return redirect('toko:produk-detail',slug = slug)
     else:
         return redirect(f'/accounts/login?next={request.path}')

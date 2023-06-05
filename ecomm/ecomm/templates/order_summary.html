@@ -49,7 +49,22 @@
                         {% endif %}
                     </div>
                 </td>
-                <td>{{ pItem.quantity }}</td>
+                <td>
+                    {{ pItem.quantity }}
+                    <!-- buttons to add/remove from cart -->
+                    <div class="button-cart">
+                        <a href="{{ pItem.produk_item.get_remove_from_cart_url }}" class="button-cart-element left">-</a>
+                        <span class="product-amount">
+                            <p class="button-cart-quantity">{{ pItem.quantity }}</p>
+                        </span>
+                        <a href="{{ pItem.produk_item.get_add_to_cart_url }}" class="button-cart-element right">+</a>
+                    </div>
+                    <span>
+                        <a href="{{ pItem.produk_item.get_remove_all_from_cart_url }}" class="button-cart-element">x</a>
+                        <p>Remove</p>
+                    </span>
+                </td>
+                
                 <td>                
                     {% if pItem.produk_item.harga_diskon %}
                     ${{ pItem.get_total_harga_diskon_item|floatformat:0|intcomma }}

@@ -57,6 +57,11 @@ class ProdukItem(models.Model):
         return reverse("toko:remove-from-cart", kwargs={
             "slug": self.slug
             })
+    
+    def get_remove_all_from_cart_url(self):
+        return reverse("toko:remove-all-from-cart", kwargs={
+            "slug": self.slug
+            })
 
     def average_rating(self):
         reviews = Review.objects.filter(produk_item=self)
