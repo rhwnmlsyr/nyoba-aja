@@ -94,7 +94,7 @@
                                 </div>
                                 <p>{{ pItem.get_kategori_display }}</p>
 
-                                <h3>{{ pItem.nama_produk }}</h3>
+                                <h3>{{ pItem.nama_produk|truncatewords:3 }}</h3>
 
                                 {% if pItem.average_rating > 0 %}
                                 {% for _ in ""|ljust:pItem.average_rating %}

@@ -19,14 +19,19 @@ from django.conf.urls.static import static
 from django.contrib import admin
 from django.urls import path, include
 from toko import views
-# from toko.views import CustomLoginView, CustomLogoutView
+from toko.views import ExtendedSignupView, ExtendedLoginView, ExtendedLogoutView
+
 urlpatterns = [
     path('admin/', admin.site.urls),
+    path('accounts/signup/', ExtendedSignupView.as_view(), name='account_signup'),
+    path('accounts/login/', ExtendedLoginView.as_view(), name='account_login'),
+    path('accounts/logout/', ExtendedLogoutView.as_view(), name='logout'),
     path('accounts/', include('allauth.urls')),
     path('paypal/', include('paypal.standard.ipn.urls')),
     path('', include('toko.urls', namespace='toko')),
     path('search-and-filter/', views.search_and_filter_view, name='search_and_filter'),
     path('filter/', views.filter_view, name='filter'),
+    
 ]
 
 if settings.DEBUG:

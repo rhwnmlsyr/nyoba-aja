@@ -222,3 +222,6 @@ if DEBUG is False:
     PAYPAL_SECRET_ID = env('PAYPAL_LIVE_SECRET_ID')
     PAYPAL_TEST = False
     PAYPAL_RECEIVER_EMAIL = env('PAYPAL_RECEIVER_EMAIL')
+
+ACCOUNT_SIGNUP_URL = 'account_signup'
+ACCOUNT_LOGIN_URL = 'account_login'

@@ -71,8 +71,13 @@
                             </div>
                             {% endfor %}
                         </div>
-                        <hr class="mb-4" />                    
-                    <button class="btn btn-primary" type="submit" {% if order.get_total_harga_order <= 0 %}disabled{% endif %}>Lanjutkan checkout</button>
+                        
+                        <hr class="mb-4" />
+                            
+                        <input type="hidden" name="alamat_pengiriman_id" value="{{ keranjang.alamat_pengiriman.id }}" />
+                    
+                        <button class="btn btn-primary" type="submit" {% if order.get_total_harga_order <= 0 %}disabled{% endif %}>Lanjutkan checkout</button>
+
                     </div>
                     <!--/.Card-->
                 </div>

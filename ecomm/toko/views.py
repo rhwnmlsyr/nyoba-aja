@@ -1,3 +1,4 @@
+import re
 from django.conf import settings
 from django.contrib import messages
 from django.contrib.auth.mixins import LoginRequiredMixin
@@ -8,13 +9,117 @@ from django.views import generic
 from paypal.standard.forms import PayPalPaymentsForm
 
 from .forms import CheckoutForm, ReviewForm
-from .models import ProdukItem, OrderProdukItem, Order, AlamatPengiriman, Payment, Review
-from django.http import HttpResponseRedirect
+from .models import ProdukItem, OrderProdukItem, Order, AlamatPengiriman, Payment, Review, User
 from django.db.models import Q, Avg, Func, Count
 
 import logging
 from .forms import ReviewForm
 from django.core.paginator import Paginator
+from allauth.account.views import SignupView, LoginView, LogoutView
+from django.db import IntegrityError
+from django.utils.html import escape
+import requests
+from django.views.decorators.csrf import ensure_csrf_cookie
+from django.utils.decorators import method_decorator
+from django.views import View
+from django.db.models import F
+from django.middleware.csrf import get_token
+from django.views.decorators.csrf import csrf_protect
+from django.utils.http import url_has_allowed_host_and_scheme
+
+class ExtendedLogoutView(LogoutView):
+    next_page = '/'
+
+    # CSRF Protection
+    def dispatch(self, request, *args, **kwargs):
+        next_page = request.GET.get('next')
+        
+        # Open Redirect Prevention
+        if next_page and url_has_allowed_host_and_scheme(next_page, allowed_hosts=request.get_host()):
+            self.next_page = next_page
+
+        return super().dispatch(request, *args, **kwargs)
+
+# CSRF Protection
+@method_decorator(ensure_csrf_cookie, name='dispatch')
+class ExtendedLoginView(LoginView):
+    # def get(self, request, *args, **kwargs):
+    #     return self.set_csrf_cookie(super().get(request, *args, **kwargs))
+
+    # def set_csrf_cookie(self, response):
+    #     if not response.cookies.get('csrftoken'):
+    #         token = get_token(self.request)
+    #         response.set_cookie('csrftoken', token)
+    #     return response
+        
+    # No Rate Limiting
+    def dispatch(self, request, *args, **kwargs):
+        return super(ExtendedLoginView, self).dispatch(request, *args, **kwargs)
+    
+    def form_valid(self, form):
+        logger = logging.getLogger(__name__)
+        cleaned_data = form.cleaned_data
+        username = cleaned_data['login']
+        password = cleaned_data['password']
+
+        # XSS Attack Prevention
+        username = escape(username)
+        password = escape(password)
+
+        logger.warning(cleaned_data)
+
+        try:
+            # SQL Injection Prevention
+            if not User.objects.filter(username__exact=username).exists():
+                form.add_error('login', 'Invalid username')
+                return self.form_invalid(form)
+            # elif User.objects.filter(username__exact=username, password__exact=password).exists():
+            response = super().form_valid(form)
+            return response
+
+        except IntegrityError:
+            form.add_error('login', 'An error occurred during login')
+            return self.form_invalid(form)
+
+class ExtendedSignupView(SignupView):
+    def form_valid(self, form):
+        logger = logging.getLogger(__name__)
+        # logger.warning('huhhuh')
+        cleaned_data = form.cleaned_data
+        username = cleaned_data['username']
+
+        # XSS Attack Prevention
+        username = escape(username)
+        password = escape(password)
+
+        logger.warning(cleaned_data)
+
+        try:
+            # SQL Injection Prevention
+            if User.objects.filter(username__exact=username).exists():
+                form.add_error('username', 'Username is already taken')
+                return self.form_invalid(form)
+            
+            # Check if the password has been previously compromised
+            if self.is_password_compromised(password):
+                form.add_error('password', 'Password has been compromised. Please choose a different password.')
+                return self.form_invalid(form)
+            
+            response = super().form_valid(form)
+            return response
+
+        except IntegrityError:
+            form.add_error('username', 'An error occurred during registration')
+            return self.form_invalid(form)
+    
+    # Prevent Account Takeovers
+    def is_password_compromised(self, password):
+        # sha1_hash = hashlib.sha1(password.encode('utf-8')).hexdigest().upper()
+
+        url = f"https://api.pwnedpasswords.com/pwnedpassword/{password}"
+        response = requests.get(url)
+
+        return response.status_code == 200
 
 def filter_view(request):
     logger = logging.getLogger(__name__)
@@ -83,8 +188,14 @@ class ProductDetailView(generic.DetailView):
     template_name = 'product_detail.html'
     queryset = ProdukItem.objects.all()
 
+    # CSRF Prevention
+    @method_decorator(ensure_csrf_cookie)
+    def dispatch(self, request, *args, **kwargs):
+        return super().dispatch(request, *args, **kwargs)
+
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
+        # Insecure Direct Object Reference Prevention, can only be accessed when user is logged in
         if self.request.user.is_authenticated:
             product = self.get_object()
             reviews = Review.objects.filter(produk_item=product)
@@ -129,6 +240,12 @@ class ProductDetailView(generic.DetailView):
             return self.render_to_response(self.get_context_data(form=form))
 
 class CheckoutView(LoginRequiredMixin, generic.FormView):
+    # Param Tampering Prevention
+    @staticmethod
+    def validate_input(input_value):
+        allowed_pattern = r'^[A-Za-z0-9-]+$'
+        return re.match(allowed_pattern, input_value) is not None
+    
     def get(self, *args, **kwargs):
         form = CheckoutForm()
         try:
@@ -147,7 +264,7 @@ class CheckoutView(LoginRequiredMixin, generic.FormView):
         }
         template_name = 'checkout.html'
         return render(self.request, template_name, context)
-
+    
     def post(self, *args, **kwargs):
         form = CheckoutForm(self.request.POST or None)
         try:
@@ -158,17 +275,26 @@ class CheckoutView(LoginRequiredMixin, generic.FormView):
                 negara = form.cleaned_data.get('negara')
                 kode_pos = form.cleaned_data.get('kode_pos')
                 opsi_pembayaran = form.cleaned_data.get('opsi_pembayaran')
-                alamat_pengiriman = AlamatPengiriman(
-                    user=self.request.user,
-                    alamat_1=alamat_1,
-                    alamat_2=alamat_2,
-                    negara=negara,
-                    kode_pos=kode_pos,
-                )
+                
+                # Perform server-side validation and verification 
+                if not self.validate_input(alamat_1) or not self.validate_input(alamat_2) or not self.validate_input(negara) or not self.validate_input(kode_pos):
+                    messages.warning(self.request, 'Invalid form input')
+                    return redirect('toko:checkout')
 
-                alamat_pengiriman.save()
-                order.alamat_pengiriman = alamat_pengiriman
+                # Insecure Direct Object Reference Prevention
+                if order.alamat_pengiriman.user != self.request.user or order.alamat_pengiriman.id != self.request.POST.get('alamat_pengiriman_id'):
+                    messages.warning(self.request, 'Insecure direct object reference')
+                    return redirect('toko:checkout')
+
+                # Update the order with the verified data
+                order.alamat_pengiriman.alamat_1 = alamat_1
+                order.alamat_pengiriman.alamat_2 = alamat_2
+                order.alamat_pengiriman.negara = negara
+                order.alamat_pengiriman.kode_pos = kode_pos
+                order.alamat_pengiriman.save()
+
                 order.save()
+
                 if opsi_pembayaran == 'P':
                     return redirect('toko:payment', payment_method='paypal')
                 else:
