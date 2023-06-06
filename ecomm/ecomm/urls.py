@@ -22,6 +22,7 @@ from toko import views
 from toko.views import ExtendedSignupView, ExtendedLoginView, ExtendedLogoutView
 
 urlpatterns = [
+    path('contact/', views.contact_view, name='contact'),
     path('admin/', admin.site.urls),
     path('accounts/signup/', ExtendedSignupView.as_view(), name='account_signup'),
     path('accounts/login/', ExtendedLoginView.as_view(), name='account_login'),

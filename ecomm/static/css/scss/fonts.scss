@@ -31,6 +31,11 @@
         &-original{
             opacity: 0.5;
         }
+        &-detail{
+            font-size: 2rem;
+            color: black;
+            font-weight: 300;
+        }
     }
     &-review{
         margin: 0;
@@ -48,5 +53,19 @@
         font-size: 1.25rem;
         color: #000;
         margin: 0;
+    }
+}
+
+.font-contact{
+    margin: 0;
+    padding: 0;
+    text-align: end;
+    &.name{
+        color: white;
+        font-weight: bold;
+    }
+    &.title{
+        color: white;
+        opacity: 0.5;
     }
 }

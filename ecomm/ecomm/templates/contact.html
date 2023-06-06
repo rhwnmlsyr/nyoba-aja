@@ -1,0 +1,109 @@
+{% extends 'base.html' %} {% block content %}
+{% load static %}
+
+<body>
+    <div class="contact-container">
+        <h3 style="opacity: 0.8;" class="mb-0">Team 5 of Class P</h3>
+        <h5 style="opacity: 0.7; margin-top: -0.5rem;">Courtesy of Kominfo's Women In Tech Training Camp</h5>
+        <div class="contact-container-child">
+            <div class="card">
+                <div class="card-inner" onmouseover="this.classList.add('flip')" onmouseout="this.classList.remove('flip')">
+                    <div class="card-front">
+                        <img src="{% static 'img/nadira.jpg' %}" class="img-profile"/>
+                        <p class="font-contact name">Nadira Meidina Yasmine</p>
+                        <p class="font-contact title">Programmer<br/>Lead Designer</p>
+                    </div>
+                    <div class="card-back">
+                        <a href="https://github.com/nadiramei"><i class="fa-brands fa-github"></i></a>
+                        <a href="https://www.linkedin.com/in/nadira-meidina-yasmine-383ba1213/"><i class="fa-brands fa-linkedin"></i></a>
+                    </div>
+                </div>
+            </div>
+    
+            <div class="card">
+                <div class="card-inner" onmouseover="this.classList.add('flip')" onmouseout="this.classList.remove('flip')">
+                    <div class="card-front">
+                        <img src="{% static 'img/meka.jpg' %}" class="img-profile"/>
+                        <p class="font-contact name">Devianda Shafira</p>
+                        <p class="font-contact title">Quality Assurance</p>
+                    </div>
+                    <div class="card-back">
+                        <a href=""><i class="fa-brands fa-linkedin"></i></a>
+                    </div>
+                </div>
+            </div>
+    
+            <div class="card">
+                <div class="card-inner" onmouseover="this.classList.add('flip')" onmouseout="this.classList.remove('flip')">
+                    <div class="card-front">
+                        <img src="{% static 'img/image 2.png' %}" class="img-profile"/>
+                        <p class="font-contact name">Nama Member</p>
+                        <p class="font-contact title">Quality Assurance</p>
+                    </div>
+                    <div class="card-back">
+                        <a href=""><i class="fa-brands fa-linkedin"></i></a>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="contact-container-child">
+            <div class="card">
+                <div class="card-inner" onmouseover="this.classList.add('flip')" onmouseout="this.classList.remove('flip')">
+                    <div class="card-front">
+                        <img src="{% static 'img/image 2.png' %}" class="img-profile"/>
+                        <p class="font-contact name">Nama Member</p>
+                        <p class="font-contact title">Quality Assurance</p>
+                    </div>
+                    <div class="card-back">
+                        <a href=""><i class="fa-brands fa-linkedin"></i></a>
+
+                    </div>
+                </div>
+            </div>
+    
+            <div class="card">
+                <div class="card-inner" onmouseover="this.classList.add('flip')" onmouseout="this.classList.remove('flip')">
+                    <div class="card-front">
+                        <img src="{% static 'img/image 2.png' %}" class="img-profile"/>
+                        <p class="font-contact name">Nama Member</p>
+                        <p class="font-contact title">Quality Assurance</p>
+                    </div>
+                    <div class="card-back">
+                        <a href=""><i class="fa-brands fa-linkedin"></i></a>
+
+                    </div>
+                </div>
+            </div>
+    
+            <div class="card">
+                <div class="card-inner" onmouseover="this.classList.add('flip')" onmouseout="this.classList.remove('flip')">
+                    <div class="card-front">
+                        <img src="{% static 'img/image 2.png' %}" class="img-profile"/>
+                        <p class="font-contact name">Nama Member</p>
+                        <p class="font-contact title">Quality Assurance</p>
+                    </div>
+                    <div class="card-back">
+                        <a href=""><i class="fa-brands fa-linkedin"></i></a>
+
+                    </div>
+                </div>
+            </div>
+        </div>
+        <hr class="hr-full"/>
+        <div class="contact-form-container">
+            <div class="flex-row">
+                <i class="fa-solid fa-envelopes-bulk"></i>
+                <form action="mailto:nadirameidina@gmail.com" method="post" enctype="text/plain" class="contact-form">
+                    <h4><b>Get in touch</b></h4>
+                    <input class="contact-input" type="text" id="subject" name="subject" required placeholder="Subject">
+                    <textarea class="contact-input" id="message" name="message" rows="5" required placeholder="Your message"></textarea>
+                    <button type="submit" class="button-contact">Send</button>
+                </form>
+            </div>
+            
+        </div>
+    </div>
+    
+</body>
+{% endblock content %}

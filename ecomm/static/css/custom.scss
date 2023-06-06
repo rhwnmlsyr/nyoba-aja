@@ -33,6 +33,19 @@
     font-family: "Josefin Sans", sans-serif;
 }
 
+::selection{
+    background-color: darken($creme, 25%);
+}
+
+footer{
+    position: static;
+    bottom: 0;
+    width: 100%;
+    & a{
+        margin-left: -0.5rem;
+    }
+}
+
 a{
     color: black;
     
@@ -138,6 +151,7 @@ hr{
     &.review{
         font-size: 1rem;
         color: gold;
+        margin: 0;
     }
 }
 
@@ -191,7 +205,7 @@ input[type="radio"] {
     }
 }
 
-textarea{
+textarea, input{
     outline: none;
     border: none;
     &:focus{
@@ -200,8 +214,11 @@ textarea{
         box-shadow: none;
     }
 }
+textarea{
+    resize: none;
+}
 
-.textinput{
+.textinput, .passwordinput{
     border-radius: 1rem;
     max-height: 8rem;
     resize: none;
@@ -209,5 +226,16 @@ textarea{
     &:focus{
         border: 1px solid grey;
         box-shadow: none;
+    }
+}
+
+.flex-row{
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    gap: 2rem;
+    & i{
+        font-size: 5rem;
+        color: darken($creme, 25%);
     }
 }

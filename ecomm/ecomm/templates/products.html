@@ -5,36 +5,39 @@
 <main>
     <div class="container">
         <!-- Navbar -->
-        <nav class="navbar navbar-expand-lg navbar-dark mt-3 mb-5 p-2 bg-creme">
+        <nav class="navbar-expand-lg navbar-dark mt-3 mb-5">
             <!-- Container wrapper -->
             <form id="filter-form" class="container column" action="{% url 'search_and_filter' %}" method="GET">
                 <div class="filter-container">
                     <!-- Search form input field -->
-                    <input style="max-width: 12rem" type="search" name="query" class="form-control rounded-0"
+                    <input style="max-width: 100%;" type="search" name="query" class="form-control rounded-0"
                         placeholder="Search Product" aria-label="Search">
                     <!-- Category filter select field -->
-                    <select style="max-width: 12rem" id="category-select" name="category"
+                    <div class="">
+                        <select id="category-select" name="category"
                         class="form-control rounded-0">
-                        <option value="">All Categories</option>
-                        <option value="N">Necklace</option>
-                        <option value="B">Bracelet</option>
-                        <option value="R">Ring</option>
-                        <option value="E">Earrings</option>
-                        <option value="T">Tiara</option>
-                        <option value="C">Choker</option>
-                        <option value="A">Anklet</option>
-                        <option value="BR">Brooch</option>
-                    </select>
+                            <option value="">All Categories</option>
+                            <option value="N">Necklace</option>
+                            <option value="B">Bracelet</option>
+                            <option value="R">Ring</option>
+                            <option value="E">Earrings</option>
+                            <option value="T">Tiara</option>
+                            <option value="C">Choker</option>
+                            <option value="A">Anklet</option>
+                            <option value="BR">Brooch</option>
+                        </select>
+                        <!-- Submit button -->
+                        <button type="submit"><i class="fa-solid fa-magnifying-glass"></i></button>
+                    </div>
+                    
                 </div>
-                <!-- Submit button -->
-                <button type="submit" class="button-search"><i class="fa-solid fa-magnifying-glass"></i> Search &
-                    Filter</button>
+                
             </form>
         </nav>
         <!-- Navbar -->
 
         <form id="sort-form" action="{% url 'filter' %}">
-            <select style="max-width: 12rem" id="sort-select" name="category" class="form-control rounded-0">
+            <select style="max-width: 12rem;  margin-left:1rem;" id="sort-select" name="category" class="form-control rounded-0">
                 <option selected>Sort By</option>
                 <option value="A">Price (Low to High)</option>
                 <option value="B">Price (High to Low)</option>

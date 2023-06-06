@@ -28,6 +28,9 @@ from django.middleware.csrf import get_token
 from django.views.decorators.csrf import csrf_protect
 from django.utils.http import url_has_allowed_host_and_scheme
 
+def contact_view(request):
+    return render(request, 'contact.html')
+
 class ExtendedLogoutView(LogoutView):
     next_page = '/'
 
@@ -87,7 +90,9 @@ class ExtendedSignupView(SignupView):
         logger = logging.getLogger(__name__)
         # logger.warning('huhhuh')
         cleaned_data = form.cleaned_data
+        logger.warning(cleaned_data)
         username = cleaned_data['username']
+        password = cleaned_data['password1']
 
         # XSS Attack Prevention
         username = escape(username)
@@ -390,13 +395,13 @@ def add_to_cart(request, slug):
                 order_produk_item.quantity += 1
                 order_produk_item.save()
                 pesan = f"You have { order_produk_item.quantity } {order_produk_item.produk_item.nama_produk} in your cart"
-                messages.info(request, pesan)
+                # messages.info(request, pesan)
                 if referer_url == 'http://127.0.0.1:8000/order-summary/':
                     return HttpResponseRedirect(referer_url)
                 return redirect('toko:produk-detail', slug = slug)
             else:
                 order.produk_items.add(order_produk_item)
-                messages.info(request, f'{order_produk_item.produk_item.nama_produk} has been added to your cart')
+                # messages.info(request, f'{order_produk_item.produk_item.nama_produk} has been added to your cart')
                 if referer_url == 'http://127.0.0.1:8000/order-summary/':
                     return HttpResponseRedirect(referer_url)
                 return redirect('toko:produk-detail', slug = slug)
@@ -404,7 +409,7 @@ def add_to_cart(request, slug):
             tanggal_order = timezone.now()
             order = Order.objects.create(user=request.user, tanggal_order=tanggal_order)
             order.produk_items.add(order_produk_item)
-            messages.info(request, f'{order_produk_item.produk_item.nama_produk} has been added to your cart')
+            # messages.info(request, f'{order_produk_item.produk_item.nama_produk} has been added to your cart')
             if referer_url == 'http://127.0.0.1:8000/order-summary/':
                 return HttpResponseRedirect(referer_url)
             return redirect('toko:produk-detail', slug = slug)
@@ -432,19 +437,19 @@ def remove_from_cart(request, slug):
                         order_produk_item.delete()
                         pesan = f"{order_produk_item.produk_item.nama_produk} removed from cart"
 
-                    messages.info(request, pesan)
+                    # messages.info(request, pesan)
                     if referer_url == 'http://127.0.0.1:8000/order-summary/':
                         return HttpResponseRedirect(referer_url)
                     return redirect('toko:produk-detail',slug = slug)
                 except ObjectDoesNotExist:
                     print(f'Error: {order_produk_item.produk_item.nama_produk} does not exist')
             else:
-                messages.info(request, f'This item does not exist in your cart')
+                # messages.info(request, f'This item does not exist in your cart')
                 if referer_url == 'http://127.0.0.1:8000/order-summary/':
                     return HttpResponseRedirect(referer_url)    
                 return redirect('toko:produk-detail',slug = slug)
         else:
-            messages.info(request, f'No active orders of {order_produk_item.produk_item.nama_produk}')
+            # messages.info(request, f'No active orders of {order_produk_item.produk_item.nama_produk}')
             if referer_url == 'http://127.0.0.1:8000/order-summary/':
                 return HttpResponseRedirect(referer_url)
             return redirect('toko:produk-detail',slug = slug)
@@ -467,19 +472,19 @@ def remove_all_from_cart(request, slug):
                     order_produk_item.delete()
                     pesan = f"{order_produk_item.produk_item.nama_produk} removed from cart"
 
-                    messages.info(request, pesan)
+                    # messages.info(request, pesan)
                     if referer_url == 'http://127.0.0.1:8000/order-summary/':
                         return HttpResponseRedirect(referer_url)
                     return redirect('toko:produk-detail',slug = slug)
                 except ObjectDoesNotExist:
                     print(f'Error: {order_produk_item.produk_item.nama_produk} does not exist')
             else:
-                messages.info(request, f'This item does not exist in your cart')
+                # messages.info(request, f'This item does not exist in your cart')
                 if referer_url == 'http://127.0.0.1:8000/order-summary/':
                     return HttpResponseRedirect(referer_url)    
                 return redirect('toko:produk-detail',slug = slug)
         else:
-            messages.info(request, f'No active orders of {order_produk_item.produk_item.nama_produk}')
+            # messages.info(request, f'No active orders of {order_produk_item.produk_item.nama_produk}')
             if referer_url == 'http://127.0.0.1:8000/order-summary/':
                 return HttpResponseRedirect(referer_url)
             return redirect('toko:produk-detail',slug = slug)
