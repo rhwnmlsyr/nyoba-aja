@@ -24,8 +24,6 @@
                         <option value="C">Choker</option>
                         <option value="A">Anklet</option>
                         <option value="BR">Brooch</option>
-
-
                     </select>
                 </div>
                 <!-- Submit button -->
@@ -42,16 +40,13 @@
                 <option value="B">Price (High to Low)</option>
                 <option value="C">Review Count</option>
                 <option value="D">Average Score</option>
-
             </select>
         </form>
-
 
         <!-- Products -->
         <section>
             <div class="text-center">
                 <div class="row">
-
                     {% for pItem in object_list %}
                     <div class="col-lg-3 col-md-6 mb-4">
                         <a href="{{ pItem.get_absolute_url }}">
@@ -67,7 +62,6 @@
                                             class="{% if forloop.first %}active{% endif %}"
                                             aria-current="true"></button>
                                         {% endfor %}
-
                                     </div>
                                     <div class="carousel-inner product-picture">
                                         {% for image in pItem.images.all %}
@@ -78,7 +72,6 @@
                                         </div>
                                         {% endfor %}
                                     </div>
-
                                     <button class="carousel-control-prev" type="button"
                                         data-mdb-target="#carouselExampleCaptions-{{ forloop.counter }}"
                                         data-mdb-slide="prev">
@@ -92,37 +85,39 @@
                                         <span class="visually-hidden">Next</span>
                                     </button>
                                 </div>
-                                <p>{{ pItem.get_kategori_display }}</p>
 
-                                <h3>{{ pItem.nama_produk|truncatewords:3 }}</h3>
+                                {% if pItem.rating_count > 0 %}
+                                <p class="product-review">{{ pItem.rating_count }} reviews</p>
+                                {% else %}
+                                <p class="product-review">No reviews yet</p>
+                                <p></p>
+                                {% endif %}
 
                                 {% if pItem.average_rating > 0 %}
                                 {% for _ in ""|ljust:pItem.average_rating %}
-                                <i class="fa-solid fa-star"></i>
+                                <i class="fa-solid fa-star main"></i>
                                 {% endfor %}
                                 {% with decimal_part=pItem.average_rating|stringformat:'s'|slice:'2:3' %}
                                 {% with decimal_integer=decimal_part|add:'0' %}
                                 {% if decimal_integer > 4 %}
-                                <i class="fa-solid fa-star-half"></i>
+                                <i class="fa-solid fa-star-half main"></i>
                                 {% endif %}
                                 {% endwith %}
                                 {% endwith %}
                                 {% endif %}
 
-
-                                {% if pItem.rating_count > 0 %}
-                                <h4>{{ pItem.rating_count }} reviews</h4>
-                                {% else %}
-                                <h4>No reviews yet</h4>
-                                {% endif %}
+                                <!-- <p class="product-label">{{ pItem.get_kategori_display }}</p> -->
+                                <h3 class="product-name product-label">{{ pItem.nama_produk|truncatechars:16 }}</h3>
 
                                 {% if pItem.harga_diskon %}
-                                <s>
-                                    ${{ pItem.harga|floatformat:0 }}
-                                </s>
-                                <h5 class="price">${{ pItem.harga_diskon|floatformat:0|intcomma }}</h5>
+                                <div class="column">
+                                    <s class="product-price-original">
+                                        ${{ pItem.harga|floatformat:0 }}
+                                    </s>
+                                    <h4 class="product-price">${{ pItem.harga_diskon|floatformat:0|intcomma }}</h5>
+                                </div>
                                 {% else %}
-                                <h5 class="price">${{ pItem.harga|floatformat:0|intcomma }}</h5>
+                                <h4 class="product-price">${{ pItem.harga|floatformat:0|intcomma }}</h5>
                                 {% endif %}
                             </div>
                         </a>
@@ -164,8 +159,6 @@
         </nav>
         {% endif %}
         <!-- Pagination -->
-
-
     </div>
 </main>
 <!--Main layout-->

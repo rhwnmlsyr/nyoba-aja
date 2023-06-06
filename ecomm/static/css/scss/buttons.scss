@@ -2,6 +2,38 @@
 
 /* @buttons */
 .button{
+    &-remove{
+        background-color: transparent;
+        display: flex;
+        flex-direction: row;
+        align-items: center;
+        justify-content: center;
+        margin-top: 0.5rem;
+        margin-left: -0.5rem;
+
+        border: 1px solid grey;
+        width: 7rem;
+        border-radius: 1rem;
+        & i, p{
+            opacity: 0.75;
+            margin: 0;
+        }
+    }
+    &-primary{
+        background-color: $brown;
+        color: white;
+        font-weight: 800;
+        margin-top: 2.5rem;
+        width: 100%;
+        &:hover{
+            background-color: $dark-brown;
+            color: white;
+            box-shadow: none;
+        }
+        &.danger{
+            background-color: #d40d12;
+        }
+    }
     &-round{
         border-radius: 1rem;
         padding: 0.25rem 0.75rem;
@@ -66,5 +98,21 @@
     &-search{
         border: grey solid 1px;
         background-color: transparent;
+    }
+}
+
+.review{
+    &-submit{
+        margin-top: 0.5rem;
+        margin-bottom: 2rem;
+        padding: 0 0.25rem;
+        color: white;
+        background-color: #000;
+        opacity: 0.75;
+        border-radius: 0.5rem;
+        &:hover{
+            opacity: 1;
+            transform: 0.5s;
+        }
     }
 }

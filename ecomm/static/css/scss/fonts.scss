@@ -15,3 +15,38 @@
     color: #000;
     margin: -5.5rem 0rem 0rem 0rem;
 }
+
+.product{
+    &-label{
+        margin: 0;
+        padding: 0;
+    }
+    &-name{
+        font-size: 1.5rem;
+    }
+    &-price{
+        font-family: 'Lato';
+        font-weight: 400;
+        opacity: 0.75;
+        &-original{
+            opacity: 0.5;
+        }
+    }
+    &-review{
+        margin: 0;
+        padding: 0;
+        opacity: 0.75;
+    }
+}
+
+.review{
+    &-title{
+        opacity: 0.75;
+        font-size: 1rem;
+    }
+    &-name{
+        font-size: 1.25rem;
+        color: #000;
+        margin: 0;
+    }
+}

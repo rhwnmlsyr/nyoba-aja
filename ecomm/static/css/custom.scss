@@ -125,6 +125,20 @@ hr{
     &.checked{
         color: gold;
     }
+    &.main{
+        font-size: 1rem;
+        padding: 0;
+        margin: 0;
+        opacity: 0.5;
+    }
+    &.opacity{
+        opacity: 0.75;
+        padding-left: -1rem;
+    }
+    &.review{
+        font-size: 1rem;
+        color: gold;
+    }
 }
 
 input[type="radio"] {
@@ -151,7 +165,7 @@ input[type="radio"] {
     display: flex;
     flex-direction: row;
     & label{
-        padding: 0 1rem;
+        padding-right: 1rem;
     }
 }
 .product-amount{
@@ -164,5 +178,36 @@ input[type="radio"] {
         color: white;
         font-size: 1rem;
         margin: 0;
+    }
+}
+
+.hr{
+    display: flex;
+    align-self: center;
+    margin: 1rem 0;
+    &-full{
+        width: 100%;
+        margin: 2rem 0;
+    }
+}
+
+textarea{
+    outline: none;
+    border: none;
+    &:focus{
+        border: none;
+        outline: none;
+        box-shadow: none;
+    }
+}
+
+.textinput{
+    border-radius: 1rem;
+    max-height: 8rem;
+    resize: none;
+    border: 1px solid grey;
+    &:focus{
+        border: 1px solid grey;
+        box-shadow: none;
     }
 }

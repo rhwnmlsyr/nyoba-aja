@@ -105,11 +105,12 @@
                         </span>
                         <a href="{{ object.get_add_to_cart_url }}" class="button-cart-element right">+</a>
                     </div>
-                    
-                    <span>
-                        <a href="{{ object.get_remove_all_from_cart_url }}" class="button-cart-element">x</a>
-                        <p>Remove</p>
-                    </span>
+                    {% if product_quantity %}
+                    <a href="{{ object.get_remove_all_from_cart_url }}" class="button-remove">
+                        <i class="fa-solid fa-trash"></i>
+                        <p>Remove All</p>
+                    </a>
+                    {% endif %}
 
                 </div>
                 <!--Content-->
@@ -118,29 +119,29 @@
         </div>
         <!--Grid row-->
 
-        <hr />
+        <hr class="hr-full"/>
         {% if request.user.is_authenticated %}
         {% if not user_reviewed %}
         <form method="post">
             {% csrf_token %}
             {{ review_form }}
-            <button type="submit">Submit Review</button>
+            <button type="submit" class="review-submit">Submit Review</button>
         </form>
         {% else %}
         <p>Thank you for submitting a review for this product.</p>
         {% endif %}
         {% endif %}
 
-        <h4>Reviews</h4>
+        <h4 class="review-title">REVIEWS</h4>
 
         {% for review in reviews %}
-        <p>{{ review.user.username }}</p>
+        <p class="review-name">{{ review.user.username }}</p>
         <!-- <p>Rating: {{ review.rating }}</p> -->
         {% for _ in ""|ljust:review.rating %}
-        <i class="fa-solid fa-star"></i>
+        <i class="fa-solid fa-star review"></i>
         {% endfor %}
         <p>{{ review.comment }}</p>
-        <hr />
+        <hr class="hr-full" />
         {% empty %}
         <p>No reviews available.</p>
         {% endfor %}
@@ -157,7 +158,7 @@
         // Create a new i element
         const iconElement = document.createElement('i');
         // Add the 'fa-solid' and 'fa-star' classes to the icon element
-        iconElement.classList.add('fa-solid', 'fa-star');
+        iconElement.classList.add('fa-solid', 'fa-star', 'opacity');
         // Insert the icon element after the radio button
         radioButton.insertAdjacentElement('afterend', iconElement);
     });
