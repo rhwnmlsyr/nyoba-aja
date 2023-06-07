@@ -289,9 +289,9 @@ class CheckoutView(LoginRequiredMixin, generic.FormView):
                     order.user = User.objects.get(username=order.user)
                 
                 # Perform server-side validation and verification 
-                if not self.validate_input(alamat_1) or not self.validate_input(alamat_2) or not self.validate_input(negara) or not self.validate_input(kode_pos):
-                    messages.warning(self.request, 'Invalid form input')
-                    return redirect('toko:checkout')
+                # if not self.validate_input(alamat_1) or not self.validate_input(alamat_2) or not self.validate_input(negara) or not self.validate_input(kode_pos):
+                #     messages.warning(self.request, 'Invalid form input')
+                #     return redirect('toko:checkout')
 
                 # Insecure Direct Object Reference Prevention
                 # if order.alamat_pengiriman.user != self.request.user or order.alamat_pengiriman.id != self.request.POST.get('alamat_pengiriman_id'):
