@@ -8,10 +8,10 @@ PILIHAN_PEMBAYARAN = (
 )
 
 class CheckoutForm(forms.Form):
-    alamat_1 = forms.CharField(widget=forms.TextInput(attrs={'placeholder': 'Alamat Anda', 'class': 'textinput form-control'}))
-    alamat_2 = forms.CharField(required=False, widget=forms.TextInput(attrs={'placeholder': 'Apartement, Rumah, atau yang lain (opsional)', 'class': 'textinput form-control'}))
-    negara = CountryField(blank_label='(Pilih Negara)').formfield(widget=CountrySelectWidget(attrs={'class': 'countryselectwidget form-select'}))
-    kode_pos = forms.CharField(widget=forms.TextInput(attrs={'class': 'textinput form-outline', 'placeholder': 'Kode Pos'}))
+    alamat_1 = forms.CharField(widget=forms.TextInput(attrs={'class': 'checkout-long'}))
+    alamat_2 = forms.CharField(required=False, widget=forms.TextInput(attrs={'class': 'checkout-long'}))
+    negara = CountryField(blank_label='(Choose Shipping Country)').formfield(widget=CountrySelectWidget(attrs={'class': 'checkout-short'}))
+    kode_pos = forms.CharField(widget=forms.TextInput(attrs={'class': 'checkout-short' }))
     simpan_info_alamat = forms.BooleanField(widget=forms.CheckboxInput(), required=False)
     opsi_pembayaran = forms.ChoiceField(widget=forms.RadioSelect(), choices=PILIHAN_PEMBAYARAN)
 
@@ -36,6 +36,6 @@ class ReviewForm(forms.Form):
         label='',
     )
     comment = forms.CharField(
-        widget=forms.Textarea(attrs={'class': 'textinput form-control', 'placeholder': 'Leave your review'}),
+        widget=forms.Textarea(attrs={'class': 'textinput form-control rating-comment', 'placeholder': 'Leave your review'}),
         label=''
     )

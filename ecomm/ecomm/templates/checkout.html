@@ -4,10 +4,18 @@
 
 {% block content%}
 <!--Main layout-->
-<main class="mt-5">
+<main>
     <div class="container">
         <!-- Heading -->
-        <h2 class="my-5 text-center">Checkout</h2>
+        <div class="row">
+            <div class="col-12 mt-4 mb-4 flex-row">
+                <a href="/order-summary" style="opacity: 0.7;">
+                    <h4 style="opacity: 0.7;">Orders</h4>
+                </a>
+                <h4 style="opacity: 0.7;">></h4>
+                <h3 style="color: black;">Checkout</h3>
+            </div>
+        </div>
 
         <form method="POST" name="formCheckout">
             {% csrf_token %}
@@ -21,26 +29,26 @@
                     
                         <!--address-->
                         <p class="mb-0">
-                            Alamat Lengkap
+                            Shipping Address
                         </p>
                         <div class="form-outline mb-4">
                             {{ form.alamat_1 }}
                         </div>
 
                         <!--address-2-->
-                        <p class="mb-0">
-                            Alamat Gedung (optional)
+                        <p class="mb-0 wide">
+                            Building Address (optional)
                         </p>
                         <div class="form-outline mb-4">
                             {{ form.alamat_2 }}
                         </div>
 
                         <!--Grid row-->
-                        <div class="row">
+                        <div class="checkout-2">
                             <!--Grid column-->
-                            <div class="col-lg-4 col-md-12 mb-4">
+                            <div class="checkout-child">
                                 <p class="mb-0">
-                                    Negara
+                                    Shipping Country
                                 </p>
                                     <div class="form-outline">
                                     {{ form.negara }}
@@ -50,8 +58,8 @@
 
                             <!--Grid column-->
                             <div class="col-lg-4 col-md-12 mb-4">
-                                <p class="mb-0">
-                                    Kode Pos
+                                <p class="mb-0 wide">
+                                    Postcode
                                 </p>
                                 <div class="form-outline">
                                     {{ form.kode_pos }}
@@ -61,9 +69,8 @@
                         </div>
                         <!--Grid row-->
 
-                        <hr />
-
                         <div class="my-3">
+                            <p>Payment Method</p>
                             {% for value, name in form.fields.opsi_pembayaran.choices %}
                             <div class="form-check">
                                 <input class="form-check-input" type="radio" name="opsi_pembayaran" id="{{ name }}" value="{{ value }}"  required />
@@ -71,26 +78,20 @@
                             </div>
                             {% endfor %}
                         </div>
-                        
-                        <hr class="mb-4" />
-                            
                         <input type="hidden" name="alamat_pengiriman_id" value="{{ keranjang.alamat_pengiriman.id }}" />
-                    
-                        <button class="btn btn-primary" type="submit" {% if order.get_total_harga_order <= 0 %}disabled{% endif %}>Lanjutkan checkout</button>
-
                     </div>
                     <!--/.Card-->
+                    <button class="btn button-payment" type="submit" {% if order.get_total_harga_order <= 0 %}disabled{% endif %}><b>Continue Payment</b></button>
                 </div>
                 <!--Grid column-->
-                
                 
                 <!--Grid column-->
                 <div class="col-md-4 mb-4">
                     <!-- Heading -->
-                    <h4 class="d-flex justify-content-between align-items-center mb-3">
-                        <span class="text-muted">Keranjang Belanja</span>
+                    <p class="d-flex justify-content-between align-items-center mb-3">
+                        <span class="text-muted">Your Orders</span>
                         <span class="badge rounded-pill badge-primary">{{ keranjang.produk_items.count }}</span>
-                    </h4>
+                    </p>
 
                     <!-- Cart -->
                     <ul class="list-group mb-3">

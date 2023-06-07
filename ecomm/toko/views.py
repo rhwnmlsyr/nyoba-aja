@@ -275,12 +275,18 @@ class CheckoutView(LoginRequiredMixin, generic.FormView):
         form = CheckoutForm(self.request.POST or None)
         try:
             order = Order.objects.get(user=self.request.user, ordered=False)
+            logger = logging.getLogger(__name__)
+            
             if form.is_valid():
-                alamat_1 = form.cleaned_data.get('alamat_1')
-                alamat_2 = form.cleaned_data.get('alamat_2')
-                negara = form.cleaned_data.get('negara')
-                kode_pos = form.cleaned_data.get('kode_pos')
-                opsi_pembayaran = form.cleaned_data.get('opsi_pembayaran')
+                logger.warning(form.cleaned_data)
+                alamat_1 = form.cleaned_data['alamat_1']
+                alamat_2 = form.cleaned_data['alamat_2']
+                negara = form.cleaned_data['negara']
+                kode_pos = form.cleaned_data['kode_pos']
+                opsi_pembayaran = form.cleaned_data['opsi_pembayaran']
+
+                if isinstance(order.user, str):
+                    order.user = User.objects.get(username=order.user)
                 
                 # Perform server-side validation and verification 
                 if not self.validate_input(alamat_1) or not self.validate_input(alamat_2) or not self.validate_input(negara) or not self.validate_input(kode_pos):
@@ -288,26 +294,28 @@ class CheckoutView(LoginRequiredMixin, generic.FormView):
                     return redirect('toko:checkout')
 
                 # Insecure Direct Object Reference Prevention
-                if order.alamat_pengiriman.user != self.request.user or order.alamat_pengiriman.id != self.request.POST.get('alamat_pengiriman_id'):
-                    messages.warning(self.request, 'Insecure direct object reference')
-                    return redirect('toko:checkout')
+                # if order.alamat_pengiriman.user != self.request.user or order.alamat_pengiriman.id != self.request.POST.get('alamat_pengiriman_id'):
+                #     messages.warning(self.request, 'Insecure direct object reference')
+                #     return redirect('toko:checkout')
 
+                logger.warning(order.user)
                 # Update the order with the verified data
-                order.alamat_pengiriman.alamat_1 = alamat_1
-                order.alamat_pengiriman.alamat_2 = alamat_2
-                order.alamat_pengiriman.negara = negara
-                order.alamat_pengiriman.kode_pos = kode_pos
-                order.alamat_pengiriman.save()
+                # order.alamat_pengiriman.alamat_1 = alamat_1
+                # order.alamat_pengiriman.alamat_2 = alamat_2
+                # order.alamat_pengiriman.negara = negara
+                # order.alamat_pengiriman.kode_pos = kode_pos
+                # order.alamat_pengiriman.save()
 
-                order.save()
+                # order.save()
 
                 if opsi_pembayaran == 'P':
                     return redirect('toko:payment', payment_method='paypal')
                 else:
                     return redirect('toko:payment', payment_method='stripe')
 
-            messages.warning(self.request, 'Checkout failed')
+            messages.warning(self.request, 'Invalid form input')
             return redirect('toko:checkout')
+        
         except ObjectDoesNotExist:
             messages.error(self.request, 'No active orders')
             return redirect('toko:order-summary')
@@ -353,8 +361,8 @@ class OrderSummaryView(LoginRequiredMixin, generic.TemplateView):
             template_name = 'order_summary.html'
             return render(self.request, template_name, context)
         except ObjectDoesNotExist:
-            messages.error(self.request, 'No active orders')
-            return redirect('order_summary')
+            # messages.error(self.request, 'No active orders')
+            return render(self.request, 'order_summary.html')
 
     def post(self, request, *args, **kwargs):
         if 'item_id' in request.POST:

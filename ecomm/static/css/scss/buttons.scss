@@ -2,12 +2,30 @@
 
 /* @buttons */
 .button{
+    &-payment{
+        width: 100%;
+        background-color: #000;
+        color: white;
+    }
+    &-checkout{
+        width: 10rem;
+        background-color: $brown;
+        border-radius: 1rem;
+        color: white;
+        &:hover{
+            transform: 0.5s;
+            color: white;
+            background-color: $dark-brown;
+        }
+    }
     &-contact{
         width: 100%;
-        height: 2rem;
+        height: 2.5rem;
         border-radius: 1rem;
-        background-color: $brown;
+        background-color: black;
         color: white;
+        font-weight: bold;
+        font-size: 1.25rem;
         &:hover{
             background-color: $dark-brown;
         }

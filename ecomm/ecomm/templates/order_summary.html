@@ -2,14 +2,18 @@
 {% load humanize %}
 
 {% block content %}
-<div class="container">
+<div class="container" style="min-height: 80vh;">
     <div class="row">
-        <div class="col-12 mt-4 mb-4">
-            <h1 class="text-center">Order Summary</h1>
+        <div class="col-12 mt-4 mb-4 flex-row">
+            <h3 style="color: black; ">Orders</h3>
+            <h4 style="opacity: 0.7;">></h4>
+            <a href="/checkout" style="opacity: 0.7;">
+                <h4 style="opacity: 0.7;">Checkout</h4>
+            </a>
         </div>
     </div>
     <table class="table align-middle mb-0 bg-white">
-        <thead class="bg-light">
+        <thead class="bg-light ">
             <tr>
                 <th>#</th>
                 <th>Nama Produk</th>
@@ -51,7 +55,6 @@
                     </div>
                 </td>
                 <td>
-                    {{ pItem.quantity }}
                     <!-- buttons to add/remove from cart -->
                     <div class="button-cart">
                         <a href="{{ pItem.produk_item.get_remove_from_cart_url }}"
@@ -88,14 +91,14 @@
                 <td>
                     <b>${{ keranjang.get_total_harga_order|floatformat:0|intcomma }}</b>
                     {% if keranjang.get_total_hemat_order %}
-                    <span class="badge badge-success">You're saving ${{ keranjang.get_total_hemat_order|floatformat:0|intcomma }}</span>
+                    <span class="badge badge-success rounded-pill">You're saving ${{ keranjang.get_total_hemat_order|floatformat:0|intcomma }}</span>
                     {% endif %}
                 </td>
             </tr>
 
             <tr>
                 <td colspan="5">
-                    <a class='btn btn-info float-end ml-2' href="{% url 'toko:checkout' %}">Checkout</a>
+                    <a class='btn button-checkout float-end ml-2' href="{% url 'toko:checkout' %}"><b><i class="fa-solid fa-cart-shopping"></i>&ensp;Checkout</b></a>
                     <!-- <a class='btn btn-danger' href="{% url 'toko:home-produk-list' %}">Cont</a> -->
                 </td>
             </tr>
