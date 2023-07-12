@@ -46,7 +46,7 @@
                     </a>
                 </td>
                 <td>
-                    <div>$
+                    <div>IDR 
                         {% if pItem.produk_item.harga_diskon %}
                         {{ pItem.produk_item.harga_diskon|floatformat:0|intcomma }}
                         {% else %}
@@ -74,10 +74,10 @@
 
                 <td>
                     {% if pItem.produk_item.harga_diskon %}
-                    ${{ pItem.get_total_harga_diskon_item|floatformat:0|intcomma }}
-                    <span class="badge badge-success rounded-pill d-inline">${{ pItem.get_total_hemat_item|floatformat:0|intcomma }} discount</span>
+                    IDR {{ pItem.get_total_harga_diskon_item|floatformat:0|intcomma }}
+                    <span class="badge badge-success rounded-pill d-inline">IDR {{ pItem.get_total_hemat_item|floatformat:0|intcomma }} discount</span>
                     {% else %}
-                    ${{ pItem.get_total_harga_item|floatformat:0|intcomma }}
+                    IDR {{ pItem.get_total_harga_item|floatformat:0|intcomma }}
                     {% endif %}
                 </td>
             </tr>
@@ -89,9 +89,9 @@
             <tr>
                 <td colspan="4"><b>Total Belanja</b></td>
                 <td>
-                    <b>${{ keranjang.get_total_harga_order|floatformat:0|intcomma }}</b>
+                    <b>IDR {{ keranjang.get_total_harga_order|floatformat:0|intcomma }}</b>
                     {% if keranjang.get_total_hemat_order %}
-                    <span class="badge badge-success rounded-pill">You're saving ${{ keranjang.get_total_hemat_order|floatformat:0|intcomma }}</span>
+                    <span class="badge badge-success rounded-pill">You're saving IDR {{ keranjang.get_total_hemat_order|floatformat:0|intcomma }}</span>
                     {% endif %}
                 </td>
             </tr>

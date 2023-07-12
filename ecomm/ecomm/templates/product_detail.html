@@ -81,16 +81,16 @@
 
                     <p class="lead">
                         {% if object.harga_diskon %}
-                        <span class="product-price-detail">${{ object.harga_diskon|floatformat:0|intcomma }}</span>
+                        <span class="product-price-detail">IDR {{ object.harga_diskon|floatformat:0|intcomma }}</span>
                         <span class="me-1 product-price">
-                            <del>${{ object.harga|floatformat:0|intcomma }}</del>
+                            <del>IDR {{ object.harga|floatformat:0|intcomma }}</del>
                         </span>
                         {% else %}
-                        <span class="product-price-detail">${{ object.harga|floatformat:0|intcomma }}</span>
+                        <span class="product-price-detail">IDR {{ object.harga|floatformat:0|intcomma }}</span>
                         {% endif %}
                     </p>
 
-                    <p>{{ object.deskripsi }}</p>
+                    <pre>{{ object.deskripsi }}</pre>
 
                     <!-- buttons to add/remove from cart -->
                     <div class="row">
@@ -123,6 +123,7 @@
         <!--Grid row-->
 
         <hr class="hr-full" />
+        <!-- Insecure Direct Object Reference Prevention, can only be accessed when user is logged in -->
         {% if request.user.is_authenticated %}
         {% if not user_reviewed %}
         <form method="post" class="mb-3">

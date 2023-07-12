@@ -6,13 +6,13 @@ from django.core.exceptions import ValidationError
 from django.db.models import Avg, Count
 
 PILIHAN_KATEGORI = (
-    ('N', 'Necklace'),
-    ('B', 'Bracelet'),
-    ('R', 'Ring'),
-    ('C', 'Choker'),
-    ('A', 'Anklet'),
+    ('NK', 'Necklace'),
+    ('BC', 'Bracelet'),
+    ('RN', 'Ring'),
+    ('CH', 'Choker'),
+    ('AN', 'Anklet'),
     ('BR', 'Brooch'),
-    ('E', 'Earrings')
+    ('EA', 'Earrings')
 )
 
 PILIHAN_LABEL = (
@@ -41,7 +41,7 @@ class ProdukItem(models.Model):
     kategori = models.CharField(choices=PILIHAN_KATEGORI, max_length=2)
 
     def __str__(self):
-        return f"{self.nama_produk} - ${self.harga}"
+        return f"{self.nama_produk} - IDR {self.harga}"
 
     def get_absolute_url(self):
         return reverse("toko:produk-detail", kwargs={

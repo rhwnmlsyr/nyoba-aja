@@ -87,7 +87,7 @@
                                 <a href="" class="text-reset ">
                                     <p>{{ item.get_category_display }}</p>
                                 </a>
-                                <h6 class="mb-3 price">${% if item.discount_price %}{{ item.discount_price }}{% else %}{{ item.price }}{% endif %}
+                                <h6 class="mb-3 price">IDR {% if item.discount_price %}{{ item.discount_price }}{% else %}{{ item.price }}{% endif %}
                                 </h6>
                             </div>
                         </div>

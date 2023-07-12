@@ -6,7 +6,7 @@
   <div class="d-flex justify-content-center">
     <div class="row justify-content-center">
       <div class="col pt-5 pb-5">
-        <p>Your total: <strong>${{ order.get_total_harga_order }}</strong></p>
+        <p>Your total: <strong>IDR {{ order.get_total_harga_order }}</strong></p>
         <br />
         {% if is_paypal %}
           <div>{{ paypalform.render }}</div>
