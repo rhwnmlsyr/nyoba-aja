@@ -201,10 +201,13 @@ class ProductDetailView(generic.DetailView):
 
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
-        # Insecure Direct Object Reference Prevention, can only be accessed when user is logged in
+
+        product = self.get_object()
+        reviews = Review.objects.filter(produk_item=product)
+        context['reviews'] = reviews
+
+        user_reviewed = False
         if self.request.user.is_authenticated:
-            product = self.get_object()
-            reviews = Review.objects.filter(produk_item=product)
             order_query = Order.objects.filter(user=self.request.user, ordered=False)
             if order_query.exists():
                 order = order_query[0]
@@ -212,15 +215,14 @@ class ProductDetailView(generic.DetailView):
                 if order_produk_item:
                     product_quantity = order_produk_item.quantity
                     context['product_quantity'] = product_quantity
-            context['reviews'] = reviews
             user_reviewed = Review.objects.filter(produk_item=product, user=self.request.user).exists()
-            context['user_reviewed'] = user_reviewed
-            
-        
-        product = self.get_object()
+
+        context['user_reviewed'] = user_reviewed
+
         average_rating = Review.objects.filter(produk_item=product).aggregate(avg_rating=Func(Avg('rating'), function='ROUND', template='%(function)s(%(expressions)s, 1)'))
         context['average_rating'] = average_rating['avg_rating']
         context['review_form'] = ReviewForm()
+
         return context
 
     def post(self, request, *args, **kwargs):

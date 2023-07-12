@@ -17,14 +17,13 @@
                         <select id="category-select" name="category"
                         class="form-control rounded-0">
                             <option value="">All Categories</option>
-                            <option value="N">Necklace</option>
-                            <option value="B">Bracelet</option>
-                            <option value="R">Ring</option>
-                            <option value="E">Earrings</option>
-                            <option value="T">Tiara</option>
-                            <option value="C">Choker</option>
-                            <option value="A">Anklet</option>
-                            <option value="BR">Brooch</option>
+                            <option {% if request.GET.category == 'NK' %}selected{% endif %} value="NK">Necklace</option>
+                            <option {% if request.GET.category == 'BC' %}selected{% endif %} value="BC">Bracelet</option>
+                            <option {% if request.GET.category == 'RN' %}selected{% endif %} value="RN">Ring</option>
+                            <option {% if request.GET.category == 'EA' %}selected{% endif %} value="EA">Earrings</option>
+                            <option {% if request.GET.category == 'CH' %}selected{% endif %} value="CH">Choker</option>
+                            <option {% if request.GET.category == 'AN' %}selected{% endif %} value="AN">Anklet</option>
+                            <option {% if request.GET.category == 'BR' %}selected{% endif %} value="BR">Brooch</option>
                         </select>
                         <!-- Submit button -->
                         <button type="submit"><i class="fa-solid fa-magnifying-glass"></i></button>
@@ -38,11 +37,11 @@
 
         <form id="sort-form" action="{% url 'filter' %}">
             <select style="max-width: 12rem;  margin-left:1rem;" id="sort-select" name="category" class="form-control rounded-0">
-                <option selected>Sort By</option>
-                <option value="A">Price (Low to High)</option>
-                <option value="B">Price (High to Low)</option>
-                <option value="C">Review Count</option>
-                <option value="D">Average Score</option>
+                <option selected>All</option>
+                <option {% if request.GET.category == 'A' %}selected{% endif %} value="A">Price (Low to High)</option>
+                <option {% if request.GET.category == 'B' %}selected{% endif %} value="B">Price (High to Low)</option>
+                <option {% if request.GET.category == 'C' %}selected{% endif %} value="C">Review Count</option>
+                <option {% if request.GET.category == 'D' %}selected{% endif %} value="D">Average Score</option>
             </select>
         </form>
 
@@ -114,13 +113,13 @@
 
                                 {% if pItem.harga_diskon %}
                                 <div class="column">
+                                    <h4 class="product-price">IDR {{ pItem.harga_diskon|floatformat:0|intcomma }}</h5>
                                     <s class="product-price-original">
-                                        ${{ pItem.harga|floatformat:0 }}
+                                        IDR {{ pItem.harga|floatformat:0|intcomma }}
                                     </s>
-                                    <h4 class="product-price">${{ pItem.harga_diskon|floatformat:0|intcomma }}</h5>
                                 </div>
                                 {% else %}
-                                <h4 class="product-price">${{ pItem.harga|floatformat:0|intcomma }}</h5>
+                                <h4 class="product-price">IDR {{ pItem.harga|floatformat:0|intcomma }}</h5>
                                 {% endif %}
                             </div>
                         </a>
