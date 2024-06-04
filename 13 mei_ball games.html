@@ -1,0 +1,123 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Javascript Advanced</title>
+</head>
+<style>
+    button {
+        padding: 10px 20px;
+        background: #000;
+        color: #fff;
+        border: none;
+        cursor: pointer;
+        margin: 10px;
+        border-radius: 4px;
+    }
+    .ball {
+        width: 50px;
+        height: 50px;
+        border-radius: 50%;
+        position: absolute;
+        top: 20%;
+        left: 10%;
+        transform: translate(-50%, -50%);
+        transition: 0.1s;
+    }
+    .red {
+        background: red;
+    }
+    .purple {
+        background: purple;
+        top: 40%;
+    }
+    .yellow {
+        background: yellow;
+        top: 60%;
+    }
+    #box {
+        width: 100px;
+        height: 100px;
+        background: green;
+        transition: 2s;
+        border-radius: 10%;
+        position: absolute;
+        top: 50%;
+        left: 10%;
+        transform: translate(-50%, -50%);
+    }
+    .hide {
+        visibility: hidden !important;
+    }
+    .show {
+        visibility: visible !important;
+    }
+</style>
+<body>
+   <!-- <button onclick="hitMe()">
+        Hit me
+    </button> -->
+    <h1>Ball Game</h1>
+    <h2 id="Time">Time</h2>
+    <button id="button">Start</button>
+    <div id="redBall" class="ball red"></div>
+    <div id="purpleBall" class="ball purple"></div>
+    <div id="yellowBall" class="ball yellow"></div>
+    <!-- <div id="box" class="hide"></div> -->
+</body>
+<script>
+
+    const button = document.getElementById("button");
+    const redBall = document.getElementById("redBall");
+    const purpleBall = document.getElementById("purpleBall");
+    const yellowBall = document.getElementById("yellowBall");
+    
+    let time = 4;
+
+    setInterval(function() {
+        if(time === 1) {
+            button.innerHTML = "Gas!!";
+            button.disabled = false;
+            clearInterval();
+            race();
+            return;
+        }
+        time--;
+        button.innerHTML = time;
+    },  1000);
+    // const box = document.getElementById("box")
+
+    // console.log("button, ball")
+    
+    // button.addEventListener("click", function() {
+    function race () {
+        const redVal = (Math.floor(Math.random() * 80));
+        const purpleVal = (Math.floor(Math.random() * 80));
+        const yellowVal = (Math.floor(Math.random() * 80));
+       
+        console.log(redVal, purpleVal, yellowVal)
+        redBall.style.left = redVal + "%";
+        purpleBall.style.left = purpleVal + "%";
+        yellowBall.style.left = yellowVal + "%";
+        
+        // ball.classList.add("hide");
+        // ball.classList.remove("show");
+
+        // box.classList.add("show");
+        // box.classList.remove("hide");
+        // ball.style.background = "green";
+        // ball.style.color = "orange";
+    };
+    // function hitMe() {
+    //     alert('this is me again');
+    // }
+
+    // const pureHit = document.getElementById('pureMe')
+
+    // // document.getElementById('pure')
+    // pureHit.addEventListener('click', function() {
+    //     alert ('this is me again')
+    // })
+</script>
+</html>
